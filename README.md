@@ -1,2 +1,2 @@
-# boutique-vue
-BoutiqueVue provides one of the most comprehensive implementations of Bootstrap v5 for Vue.js. 
+# the-vue-bootique
+TheVueBootique provides a fine array of options to aid in any developer's application development. The options provided are crafted with care, utilizing only the finest ingredients, Bootstrap 5 and Vue 3.
