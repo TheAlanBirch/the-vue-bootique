@@ -1,34 +1,64 @@
-<script lang="ts" setup>
-defineProps({
-  header: String,
-  footer: String,
-  title: String,
-  imgSrc: String,
-  imgAlt: String,
-  noBody: Boolean,
-});
-</script>
-
 <template>
   <div class="card">
     <img v-if="imgSrc" :src="imgSrc" :alt="imgAlt" class="card-img-top" />
 
-    <div v-if="header" class="card-header">{{ header }}</div>
+    <component v-if="header" :is="headerTag" class="card-header">{{
+      header
+    }}</component>
     <div v-else-if="$slots.header">
       <slot name="header"></slot>
     </div>
 
     <slot v-if="noBody"></slot>
-    <div v-else class="card-body">
-      <h5 v-if="title" class="card-title">{{ title }}</h5>
+    <component v-else :is="bodyTag" class="card-body">
+      <component v-if="title" :is="titleTag" class="card-title">{{
+        title
+      }}</component>
+      <component v-if="subTitle" :is="subTitleTag" class="card-subtitle">{{
+        subTitle
+      }}</component>
       <slot></slot>
-    </div>
+    </component>
 
-    <div v-if="footer" class="card-footer">{{ footer }}</div>
+    <component v-if="footer" :is="footerTag" class="card-footer">{{
+      footer
+    }}</component>
     <div v-else-if="$slots.footer">
       <slot name="footer"></slot>
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+defineProps({
+  header: String,
+  headerTag: {
+    type: String,
+    default: "div",
+  },
+  bodyTag: {
+    type: String,
+    default: "div",
+  },
+  footer: String,
+  footerTag: {
+    type: String,
+    default: "div",
+  },
+  title: String,
+  titleTag: {
+    type: String,
+    default: "h4",
+  },
+  subTitle: String,
+  subTitleTag: {
+    type: String,
+    default: "h6",
+  },
+  imgSrc: String,
+  imgAlt: String,
+  noBody: Boolean,
+});
+</script>
 
 <style></style>
