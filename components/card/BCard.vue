@@ -1,13 +1,12 @@
 <template>
+  <!-- TODO: Replace all component tags with the appropriate BCard component -->
   <div class="card">
     <img v-if="imgSrc" :src="imgSrc" :alt="imgAlt" class="card-img-top" />
 
-    <component v-if="header" :is="headerTag" class="card-header">{{
-      header
-    }}</component>
-    <div v-else-if="$slots.header">
+    <b-card-header v-if="header" :header="header" :header-tag="headerTag" />
+    <b-card-header v-else-if="$slots.header">
       <slot name="header"></slot>
-    </div>
+    </b-card-header>
 
     <slot v-if="noBody"></slot>
     <component v-else :is="bodyTag" class="card-body">
