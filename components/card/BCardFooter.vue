@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: Add variant and class props -->
   <component :is="footerTag" class="card-footer">
     <slot></slot>
     <template v-if="showFooterProp">

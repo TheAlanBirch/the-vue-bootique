@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: Add variant and class props -->
   <component :is="headerTag" class="card-header">
     <slot></slot>
     <template v-if="showHeaderProp">

@@ -1,5 +1,6 @@
 <template>
   <!-- TODO: Replace all component tags with the appropriate BCard component -->
+  <!-- TODO: Add remaining props -->
   <div class="card">
     <img v-if="imgSrc" :src="imgSrc" :alt="imgAlt" class="card-img-top" />
 

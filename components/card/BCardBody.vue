@@ -1,11 +1,16 @@
 <template>
+  <!-- TODO: Add remaining props -->
   <div class="card-body">
-    <component v-if="title" :is="titleTag" class="card-title">{{
-      title
-    }}</component>
-    <component v-if="subTitle" :is="subTitleTag" class="card-subtitle">{{
-      subTitle
-    }}</component>
+    <b-card-title
+      v-if="title"
+      :title="title"
+      :title-tag="titleTag"
+    ></b-card-title>
+    <b-card-sub-title
+      v-if="subTitle"
+      :sub-title="subTitle"
+      :sub-title-tag="subTitleTag"
+    ></b-card-sub-title>
     <slot></slot>
   </div>
 </template>
