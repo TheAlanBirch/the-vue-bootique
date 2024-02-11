@@ -20,9 +20,9 @@
       <slot></slot>
     </b-card-body>
 
-    <component v-if="footer" :is="footerTag" class="card-footer">{{
+    <b-card-footer v-if="footer" :is="footerTag" class="card-footer">{{
       footer
-    }}</component>
+    }}</b-card-footer>
     <div v-else-if="$slots.footer">
       <slot name="footer"></slot>
     </div>
