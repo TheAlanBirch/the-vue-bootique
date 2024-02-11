@@ -9,15 +9,16 @@
     </b-card-header>
 
     <slot v-if="noBody"></slot>
-    <component v-else :is="bodyTag" class="card-body">
-      <component v-if="title" :is="titleTag" class="card-title">{{
-        title
-      }}</component>
-      <component v-if="subTitle" :is="subTitleTag" class="card-subtitle">{{
-        subTitle
-      }}</component>
+    <b-card-body
+      v-else
+      :body-tag="bodyTag"
+      :sub-title="subTitle"
+      :sub-title-tag="subTitleTag"
+      :title="title"
+      :title-tag="titleTag"
+    >
       <slot></slot>
-    </component>
+    </b-card-body>
 
     <component v-if="footer" :is="footerTag" class="card-footer">{{
       footer
