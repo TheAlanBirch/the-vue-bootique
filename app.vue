@@ -1,12 +1,13 @@
 <template>
   <div class="d-flex justify-content-center align-items-center mt-5 mx-4">
-    <b-card header="Card Header" footer="Card Footer" class="text-center">
-      <div class="bg-secondary text-light">
-        This is some content within the default
-        <samp>&lt;b-card-body&gt;</samp> block of the
-        <samp>&lt;b-card&gt;</samp> component. Notice the padding between the
-        card's border and this gray <samp>&lt;div&gt;</samp>.
-      </div>
+    <b-card
+      header="Card Header"
+      title="Card Title"
+      sub-title="Card Subtitle"
+      footer="Card Footer"
+    >
+      Some quick example text to build on the card title and make up the bulk of
+      the card's content.
     </b-card>
   </div>
 </template>
