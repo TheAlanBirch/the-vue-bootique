@@ -1,7 +1,21 @@
 {
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser"
+  },
   "extends": ["@nuxtjs/eslint-config", "prettier"],
   "rules": {
     "vue/singleline-html-element-content-newline": "off",
     "vue/multi-word-component-names": "off"
+  },
+  "globals": {
+    "describe": "readonly",
+    "it": "readonly",
+    "expect": "readonly"
   }
 }
