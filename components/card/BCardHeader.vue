@@ -1,11 +1,13 @@
 <template>
   <component :is="headerTag" class="card-header">
     <slot></slot>
-    <template v-if="showHeaderProp">{{ header }}</template>
+    <template v-if="showHeaderProp">
+      {{ header }}
+    </template>
   </component>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps({
   header: String,
   headerTag: {
