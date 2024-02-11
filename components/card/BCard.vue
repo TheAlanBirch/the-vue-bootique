@@ -21,9 +21,7 @@
       <slot></slot>
     </b-card-body>
 
-    <b-card-footer v-if="footer" :is="footerTag" class="card-footer">{{
-      footer
-    }}</b-card-footer>
+    <b-card-footer :is="footerTag" v-if="footer" class="card-footer">{{ footer }}</b-card-footer>
     <div v-else-if="$slots.footer">
       <slot name="footer"></slot>
     </div>
@@ -35,26 +33,26 @@ defineProps({
   header: String,
   headerTag: {
     type: String,
-    default: "div",
+    default: 'div',
   },
   bodyTag: {
     type: String,
-    default: "div",
+    default: 'div',
   },
   footer: String,
   footerTag: {
     type: String,
-    default: "div",
+    default: 'div',
   },
   title: String,
   titleTag: {
     type: String,
-    default: "h4",
+    default: 'h4',
   },
   subTitle: String,
   subTitleTag: {
     type: String,
-    default: "h6",
+    default: 'h6',
   },
   imgSrc: String,
   imgAlt: String,
