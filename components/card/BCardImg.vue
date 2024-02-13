@@ -14,7 +14,7 @@ const props = defineProps({
 const cardImageLocation = computed(() => {
   switch (props.position) {
     case 'bottom':
-      return ' card-img-bottom';
+      return 'card-img-bottom';
     case 'left':
       return 'img-fluid object-fit-cover h-100 rounded-start';
     case 'right':
