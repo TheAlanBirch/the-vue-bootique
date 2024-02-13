@@ -2,34 +2,53 @@
   <!-- TODO: Replace all component tags with the appropriate BCard component -->
   <!-- TODO: Add remaining props -->
   <div class="card">
-    <img v-if="imgSrc" :src="imgSrc" :alt="imgAlt" class="card-img-top" />
-
-    <b-card-header v-if="header" :header="header" :header-tag="headerTag" />
-    <b-card-header v-else-if="$slots.header">
-      <slot name="header"></slot>
-    </b-card-header>
-
-    <slot v-if="noBody"></slot>
-    <b-card-body
-      v-else
-      :body-tag="bodyTag"
-      :sub-title="subTitle"
-      :sub-title-tag="subTitleTag"
-      :title="title"
-      :title-tag="titleTag"
+    <div
+      class="row g-0"
+      :class="{
+        'flex-column': !isHorizontalCard,
+        'flex-row-reverse': imgRight,
+        'flex-column-reverse': imgBottom,
+      }"
     >
-      <slot></slot>
-    </b-card-body>
+      <div :class="{ 'col-md-4 ': isHorizontalCard, col: !isHorizontalCard }">
+        <b-card-img
+          v-if="imgSrc"
+          :position="imagePosition"
+          :src="imgSrc"
+          :alt="imgAlt"
+          :height="imgHeight"
+          :width="imgWidth"
+        ></b-card-img>
+      </div>
+      <div class="col pe-0">
+        <b-card-header v-if="header" :header="header" :header-tag="headerTag" />
+        <b-card-header v-else-if="$slots.header" :header-tag="headerTag">
+          <slot name="header"></slot>
+        </b-card-header>
 
-    <b-card-footer :is="footerTag" v-if="footer" class="card-footer">{{ footer }}</b-card-footer>
-    <div v-else-if="$slots.footer">
-      <slot name="footer"></slot>
+        <slot v-if="noBody"></slot>
+        <b-card-body
+          v-else
+          :body-tag="bodyTag"
+          :sub-title="subTitle"
+          :sub-title-tag="subTitleTag"
+          :title="title"
+          :title-tag="titleTag"
+        >
+          <slot></slot>
+        </b-card-body>
+
+        <b-card-footer v-if="footer" :footer="footer" :footer-tag="footerTag"></b-card-footer>
+        <b-card-footer v-else-if="$slots.footer" :footer-tag="footerTag">
+          <slot name="footer"></slot>
+        </b-card-footer>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-defineProps({
+const props = defineProps({
   header: String,
   headerTag: {
     type: String,
@@ -56,7 +75,36 @@ defineProps({
   },
   imgSrc: String,
   imgAlt: String,
+  imgTop: {
+    type: Boolean,
+    default: false,
+  },
+  imgBottom: {
+    type: Boolean,
+    default: false,
+  },
+  imgLeft: {
+    type: Boolean,
+    default: false,
+  },
+  imgRight: {
+    type: Boolean,
+    default: false,
+  },
+  imgWidth: [Number, String],
+  imgHeight: [Number, String],
   noBody: Boolean,
+});
+
+const isHorizontalCard = computed(() => {
+  return !!props.imgLeft || !!props.imgRight;
+});
+
+const imagePosition = computed(() => {
+  if (props.imgBottom) return 'bottom';
+  if (props.imgLeft) return 'left';
+  if (props.imgRight) return 'right';
+  return 'top';
 });
 </script>
 
