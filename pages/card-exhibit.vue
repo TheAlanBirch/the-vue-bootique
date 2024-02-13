@@ -50,6 +50,8 @@
           style="max-width: 540px"
         >
           <b-card-text> Another quick card I'm testing with. </b-card-text>
+          <b-card-link href="#">Card link</b-card-link>
+          <b-card-link href="#">Another link</b-card-link>
         </b-card>
         <b-card
           class="mb-2"
