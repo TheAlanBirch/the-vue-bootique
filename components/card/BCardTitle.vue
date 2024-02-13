@@ -12,14 +12,14 @@ const props = defineProps({
   title: String,
   titleTag: {
     type: String,
-    default: "h4",
+    default: 'h4',
   },
 });
 
-const slots = ref(useSlots());
+const slots = useSlots();
 
 const showTitleProp = computed(() => {
-  return !slots.value.default?.().length && !!props.title;
+  return !slots.default?.().length && !!props.title;
 });
 </script>
 
