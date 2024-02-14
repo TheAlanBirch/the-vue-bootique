@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO: Replace all component tags with the appropriate BCard component -->
   <!-- TODO: Add remaining props -->
   <div class="card">
     <div :class="cardClasses">
@@ -13,7 +12,7 @@
           :width="imgWidth"
         ></b-card-img>
       </div>
-      <div class="col pe-0">
+      <div class="col">
         <b-card-header v-if="header" :header="header" :header-tag="headerTag" />
         <b-card-header v-else-if="$slots.header" :header-tag="headerTag">
           <slot name="header"></slot>
