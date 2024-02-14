@@ -20,6 +20,8 @@
     "expect": "readonly",
     "ref": "readonly",
     "useSlots": "readonly",
-    "computed": "readonly"
+    "computed": "readonly",
+    "listGroupClasses": "readonly",
+    "listGroupItemComputeds": "readonly"
   }
 }
