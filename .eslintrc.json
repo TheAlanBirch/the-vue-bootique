@@ -11,11 +11,13 @@
   "extends": ["@nuxtjs/eslint-config", "prettier"],
   "rules": {
     "vue/singleline-html-element-content-newline": "off",
-    "vue/multi-word-component-names": "off"
+    "vue/multi-word-component-names": "off",
+    "vue/require-default-prop": "off"
   },
   "globals": {
     "describe": "readonly",
     "it": "readonly",
-    "expect": "readonly"
+    "expect": "readonly",
+    "defineProps": "readonly"
   }
 }
