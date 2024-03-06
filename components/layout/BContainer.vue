@@ -6,9 +6,8 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { useContainerProps } from '~/composables/layout/bContainerProps';
 
-const props = defineProps(useContainerProps());
+const props = defineProps(useBContainerProps());
 
 const containerClasses = computed(() => {
   if (props.fluid) return typeof props.fluid === 'boolean' ? 'container-fluid' : `container-${props.fluid}`;

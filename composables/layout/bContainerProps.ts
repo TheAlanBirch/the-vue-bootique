@@ -1,9 +1,9 @@
 /**
- * Generates props for the container component.
+ * Generates props for the BContainer component.
  *
- * @return {Object} An object containing props for the container component
+ * @return {object} An object containing props for the BContainer component
  */
-export const useContainerProps = () => {
+export const useBContainerProps = () => {
   return {
     /**
      * flag to force the container to span the entire width of the viewport.

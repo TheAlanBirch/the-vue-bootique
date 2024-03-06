@@ -18,6 +18,10 @@
     "describe": "readonly",
     "it": "readonly",
     "expect": "readonly",
-    "defineProps": "readonly"
+    "defineProps": "readonly",
+    "defineEmits": "readonly",
+    "useBRowProps": "readonly",
+    "useBColProps": "readonly",
+    "useBContainerProps": "readonly"
   }
 }
