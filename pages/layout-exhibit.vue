@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column justify-content-evenly min-vh-100">
+  <div class="d-flex flex-column justify-content-evenly min-vh-100 py-5">
     <div class="d-flex flex-column gap-3">
       <b-container class="text-center">
         <b-row>
@@ -17,9 +17,8 @@
         </div>
       </div>
     </div>
-    <hr />
-    <hr />
-    <div class="d-flex flex-column gap-3">
+    <div style="height: 300px" ></div>
+    <div class="d-flex flex-column gap-4">
       <b-container class="text-center">
         <b-row>
           <b-col>1 of 2</b-col>

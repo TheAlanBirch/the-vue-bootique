@@ -6,27 +6,27 @@
 export const useBContainerProps = () => {
   return {
     /**
-     * flag to force the container to span the entire width of the viewport.
+     * Flag to force the container to span the entire width of the viewport.
      * @defaults false
-     * @type {boolean}
+     * 
      */
     fluid: {
-      type: Boolean,
+      type: Boolean(),
       default: false,
     },
     /**
      * Sets container to full width up until the specified breakpoint.
-     * @defaults null
      * @type {string}
      * @enum {string} 'sm', 'md', 'lg', 'xl', 'xxl'
+     * @default null
      */
     responsive: {
-      type: String,
+      type: String() || null,
       default: null,
     },
     /**
      * The HTML element used for the container.
-     * @defaults 'div'
+     * @default 'div'
      * @type {string}
      */
     tag: {

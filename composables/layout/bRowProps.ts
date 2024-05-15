@@ -5,23 +5,31 @@
  */
 export const useBRowProps = () => {
   return {
-    // alignH: {
-    //   type: String,
-    //   default: null,
-    // },
-    // alignV: {
-    //   type: String,
-    //   default: null,
-    // },
-    // cols: [Number, String],
-    // colsSm: [Number, String],
-    // colsMd: [Number, String],
-    // colsLg: [Number, String],
-    // colsXl: [Number, String],
-    // noGutters: {
-    //   type: Boolean,
-    //   default: false,
-    // },
+    /**
+     * Sets the vertical alignment of the children in the row. 
+     * @type {string}
+     * @enum {string} 'start', 'center', 'end'
+     */
+    alignV: {
+      type: String,
+      default: null,
+    },
+    /**
+     * 
+     */
+    alignH: {
+      type: String,
+      default: null,
+    },
+    rowCols: [Number, String],
+    rowColsSm: [Number, String],
+    rowColsMd: [Number, String],
+    rowColsLg: [Number, String],
+    rowColsXl: [Number, String],
+    noGutters: { // TODO: set .g-0 for noGutters
+      type: Boolean,
+      default: false,
+    },
     tag: {
       type: String,
       default: 'div',
