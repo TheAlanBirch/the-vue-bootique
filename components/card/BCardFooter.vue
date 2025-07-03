@@ -13,14 +13,14 @@ const props = defineProps({
   footer: String,
   footerTag: {
     type: String,
-    default: "div",
+    default: 'div',
   },
 });
 
-const slots = ref(useSlots());
+const slots = useSlots();
 
 const showFooterProp = computed(() => {
-  return !slots.value.default?.().length && !!props.footer;
+  return !slots.default?.().length && !!props.footer;
 });
 </script>
 

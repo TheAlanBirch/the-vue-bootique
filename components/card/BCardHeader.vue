@@ -13,14 +13,14 @@ const props = defineProps({
   header: String,
   headerTag: {
     type: String,
-    default: "div",
+    default: 'div',
   },
 });
 
-const slots = ref(useSlots());
+const slots = useSlots();
 
 const showHeaderProp = computed(() => {
-  return !slots.value.default?.().length && !!props.header;
+  return !slots.default?.().length && !!props.header;
 });
 </script>
 

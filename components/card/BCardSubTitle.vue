@@ -13,14 +13,14 @@ const props = defineProps({
   subTitle: String,
   subTitleTag: {
     type: String,
-    default: "h4",
+    default: 'h4',
   },
 });
 
-const slots = ref(useSlots());
+const slots = useSlots();
 
 const showSubTitleProp = computed(() => {
-  return !slots.value.default?.().length && !!props.subTitle;
+  return !slots.default?.().length && !!props.subTitle;
 });
 </script>
 
