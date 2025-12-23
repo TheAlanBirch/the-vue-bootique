@@ -31,7 +31,7 @@ const resolveOptions = (
     return value;
   }
 
-  const attrContent = el.getAttribute('title');
+  const attrContent = el.getAttribute('data-bs-content');
   return attrContent ? { content: attrContent } : null;
 };
 

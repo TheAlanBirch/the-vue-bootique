@@ -86,6 +86,8 @@ vi.mock('bootstrap/js/dist/collapse', () => {
   class CollapseMock {
     public disposed = false;
     public toggleCount = 0;
+    public showCount = 0;
+    public hideCount = 0;
     static instances = instances;
 
     static getInstance(element: Element): CollapseMock | null {
@@ -101,11 +103,11 @@ vi.mock('bootstrap/js/dist/collapse', () => {
     }
 
     show(): void {
-      this.toggle();
+      this.showCount += 1;
     }
 
     hide(): void {
-      this.toggle();
+      this.hideCount += 1;
     }
 
     dispose(): void {
