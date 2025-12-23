@@ -32,3 +32,48 @@ declare module 'bootstrap/js/dist/tooltip' {
     static getInstance(element: Element): Tooltip | null;
   }
 }
+
+declare module 'bootstrap/js/dist/popover' {
+  import type { TooltipOptions } from 'bootstrap/js/dist/tooltip';
+
+  export interface PopoverOptions extends TooltipOptions {
+    content?: string | Element | (() => string | Element);
+  }
+
+  export default class Popover {
+    constructor(element: Element, options?: PopoverOptions);
+    dispose(): void;
+    static getInstance(element: Element): Popover | null;
+  }
+}
+
+declare module 'bootstrap/js/dist/scrollspy' {
+  export interface ScrollSpyOptions {
+    offset?: number;
+    method?: string;
+    target?: string | Element;
+  }
+
+  export default class ScrollSpy {
+    constructor(element: Element, options?: ScrollSpyOptions);
+    dispose(): void;
+    refresh(): void;
+    static getInstance(element: Element): ScrollSpy | null;
+  }
+}
+
+declare module 'bootstrap/js/dist/collapse' {
+  export interface CollapseOptions {
+    toggle?: boolean;
+    parent?: string | Element;
+  }
+
+  export default class Collapse {
+    constructor(element: Element, options?: CollapseOptions);
+    toggle(): void;
+    show(): void;
+    hide(): void;
+    dispose(): void;
+    static getInstance(element: Element): Collapse | null;
+  }
+}
