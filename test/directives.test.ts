@@ -221,7 +221,7 @@ describe('v-popover', () => {
 describe('v-scrollspy', () => {
   it('initializes scrollspy with provided options', async () => {
     const wrapper = mount({
-      template: '<div v-scrollspy="{ target: `#nav`, offset: 10 }"></div>',
+      template: '<div v-scrollspy="{ target: \'#nav\', offset: 10 }"></div>',
       directives: { scrollspy: vScrollspy },
     });
 
