@@ -32,12 +32,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, useId, watch } from 'vue';
+import { computed, onMounted, onUnmounted, watch } from 'vue';
 import type { Size } from '@/types/common';
+import { useUniqueId } from '@/composables/useUniqueId';
 
 defineOptions({ name: 'BModal' });
-
-let modalIdCounter = 0;
 
 const props = withDefaults(
   defineProps<{
@@ -61,7 +60,7 @@ const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
-const id = useId ? useId() : `b-modal-${++modalIdCounter}`;
+const id = useUniqueId('b-modal');
 const labelId = `${id}-label`;
 
 const isOpen = computed(() => props.modelValue);

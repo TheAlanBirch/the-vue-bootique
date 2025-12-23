@@ -31,8 +31,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useId } from 'vue';
+import { computed } from 'vue';
 import { resolveBooleanish } from '@/composables/useBooleanish';
+import { useUniqueId } from '@/composables/useUniqueId';
 import { ariaInvalid, validationClass } from '@/composables/useValidation';
 import type { Booleanish, FormState, OptionItem } from '@/types/common';
 
@@ -67,7 +68,7 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string | number | boolean): void;
 }>();
 
-const uid = computed(() => props.id || (useId ? useId() : `select-${Math.random().toString(36).slice(2, 9)}`));
+const uid = computed(() => props.id || useUniqueId('select'));
 const stateClass = computed(() => validationClass(props.state));
 const isDisabled = computed(() => resolveBooleanish(props.disabled));
 const isRequired = computed(() => resolveBooleanish(props.required));

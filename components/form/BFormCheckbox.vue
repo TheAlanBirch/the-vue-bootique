@@ -24,8 +24,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useId } from 'vue';
+import { computed } from 'vue';
 import { resolveBooleanish } from '@/composables/useBooleanish';
+import { useUniqueId } from '@/composables/useUniqueId';
 import { ariaInvalid } from '@/composables/useValidation';
 import type { Booleanish, FormState } from '@/types/common';
 
@@ -59,7 +60,7 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void;
 }>();
 
-const uid = computed(() => props.id || (useId ? useId() : `checkbox-${Math.random().toString(36).slice(2, 9)}`));
+const uid = computed(() => props.id || useUniqueId('checkbox'));
 const isDisabled = computed(() => resolveBooleanish(props.disabled));
 const isRequired = computed(() => resolveBooleanish(props.required));
 
