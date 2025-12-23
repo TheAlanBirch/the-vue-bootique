@@ -146,6 +146,7 @@ const getCollapseInstance = async (el: Element) => {
   return CollapseMock.getInstance(el);
 };
 
+/** Microtask helper to let async directive mounts settle before assertions. */
 const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 describe('v-tooltip', () => {

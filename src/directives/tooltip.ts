@@ -14,7 +14,12 @@ export type TooltipBindingValue =
 
 type TooltipInstance = InstanceType<typeof TooltipType>;
 
+/** Cache of the Tooltip constructor to avoid multiple dynamic imports. */
 let tooltipCtorPromise: Promise<typeof TooltipType> | null = null;
+
+/**
+ * Lazily import Bootstrap Tooltip at runtime for SSR safety while reusing a single promise.
+ */
 const loadTooltip = () => {
   if (!tooltipCtorPromise) {
     tooltipCtorPromise = import('bootstrap/js/dist/tooltip').then((m) => m.default);
