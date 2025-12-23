@@ -1,6 +1,12 @@
 <template>
   <div class="container py-4">
-    <b-navbar brand="Vue Bootique" background="dark" variant="dark" class="mb-4">
+    <b-navbar background="dark" variant="dark" class="mb-4">
+      <template #brand>
+        <span class="d-flex align-items-center gap-2">
+          <b-icon-flower2 />
+          <span>Vue Bootique</span>
+        </span>
+      </template>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" href="#">Home</a>
@@ -12,11 +18,14 @@
     </b-navbar>
 
     <div class="d-flex align-items-center gap-2 mb-3">
-      <b-button variant="primary" @click="showAlert = true">Show Alert</b-button>
-      <b-button variant="secondary" @click="isModalOpen = true">Open Modal</b-button>
+      <b-button variant="primary" @click="showAlert = true"> <b-icon-bell-fill class="me-2" /> Show Alert </b-button>
+      <b-button variant="secondary" @click="isModalOpen = true">
+        <b-icon-columns-gap class="me-2" /> Open Modal
+      </b-button>
     </div>
 
     <b-alert v-model="showAlert" variant="success" dismissible class="mb-3">
+      <b-icon-check-circle class="me-2" />
       Welcome to the Vue Bootique component library.
     </b-alert>
 
@@ -40,20 +49,10 @@
         />
       </div>
       <div class="col-md-6">
-        <b-form-select
-          v-model="form.role"
-          label="Role"
-          placeholder="Select a role"
-          :options="roles"
-        />
+        <b-form-select v-model="form.role" label="Role" placeholder="Select a role" :options="roles" />
       </div>
       <div class="col-12">
-        <b-form-textarea
-          v-model="form.bio"
-          label="Bio"
-          rows="3"
-          placeholder="Tell us about yourself"
-        />
+        <b-form-textarea v-model="form.bio" label="Bio" rows="3" placeholder="Tell us about yourself" />
       </div>
       <div class="col-12">
         <b-form-checkbox v-model="form.accepted" label="I agree to the terms" />
@@ -68,7 +67,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-const showAlert = ref(true);
+const showAlert = ref(false);
 const isModalOpen = ref(false);
 const form = ref({
   name: '',

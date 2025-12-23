@@ -1,1 +1,77 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+.b-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.b-icon i {
+  display: inline-flex;
+}
+
+.b-iconstack {
+  display: inline-flex;
+  position: relative;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+}
+
+.b-icon-stacked {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.b-icon-animate-spin {
+  animation: b-icon-spin 1s linear infinite;
+}
+
+.b-icon-animate-pulse {
+  animation: b-icon-pulse 0.75s ease-in-out infinite;
+}
+
+.b-icon-animate-fade {
+  animation: b-icon-fade 1.2s ease-in-out infinite;
+}
+
+@keyframes b-icon-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes b-icon-pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes b-icon-fade {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
