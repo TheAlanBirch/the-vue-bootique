@@ -11,8 +11,6 @@ import type { Booleanish, Breakpoint } from '@/types/common';
 
 defineOptions({ name: 'BRow' });
 
-const breakpoints: Breakpoint[] = ['sm', 'md', 'lg', 'xl', 'xxl'];
-
 const props = withDefaults(
   defineProps<{
     tag?: string;
@@ -43,11 +41,11 @@ const rowClasses = computed(() => {
   };
 
   addColsClass(props.cols);
-  addColsClass(props.colsSm, breakpoints[0]);
-  addColsClass(props.colsMd, breakpoints[1]);
-  addColsClass(props.colsLg, breakpoints[2]);
-  addColsClass(props.colsXl, breakpoints[3]);
-  addColsClass(props.colsXxl, breakpoints[4]);
+  addColsClass(props.colsSm, 'sm');
+  addColsClass(props.colsMd, 'md');
+  addColsClass(props.colsLg, 'lg');
+  addColsClass(props.colsXl, 'xl');
+  addColsClass(props.colsXxl, 'xxl');
 
   if (resolveBooleanish(props.noGutters)) {
     classes.push('g-0');

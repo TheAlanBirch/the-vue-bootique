@@ -10,8 +10,6 @@ import type { Breakpoint } from '@/types/common';
 
 defineOptions({ name: 'BCol' });
 
-const breakpoints: Breakpoint[] = ['sm', 'md', 'lg', 'xl', 'xxl'];
-
 const props = withDefaults(
   defineProps<{
     tag?: string;
@@ -69,32 +67,29 @@ const colClasses = computed(() => {
   const baseCol = addColClass(props.cols);
   classes.push(baseCol ?? 'col');
 
-  const colValues: Array<[Breakpoint, number | string | boolean | undefined]> = [
-    [breakpoints[0], props.sm],
-    [breakpoints[1], props.md],
-    [breakpoints[2], props.lg],
-    [breakpoints[3], props.xl],
-    [breakpoints[4], props.xxl],
-  ];
+  const colSm = addColClass(props.sm, 'sm');
+  const colMd = addColClass(props.md, 'md');
+  const colLg = addColClass(props.lg, 'lg');
+  const colXl = addColClass(props.xl, 'xl');
+  const colXxl = addColClass(props.xxl, 'xxl');
 
-  colValues.forEach(([breakpoint, value]) => {
-    const colClass = addColClass(value, breakpoint);
+  [colSm, colMd, colLg, colXl, colXxl].forEach((colClass) => {
     if (colClass) classes.push(colClass);
   });
 
   addOffsetClass(props.offset);
-  addOffsetClass(props.offsetSm, breakpoints[0]);
-  addOffsetClass(props.offsetMd, breakpoints[1]);
-  addOffsetClass(props.offsetLg, breakpoints[2]);
-  addOffsetClass(props.offsetXl, breakpoints[3]);
-  addOffsetClass(props.offsetXxl, breakpoints[4]);
+  addOffsetClass(props.offsetSm, 'sm');
+  addOffsetClass(props.offsetMd, 'md');
+  addOffsetClass(props.offsetLg, 'lg');
+  addOffsetClass(props.offsetXl, 'xl');
+  addOffsetClass(props.offsetXxl, 'xxl');
 
   addOrderClass(props.order);
-  addOrderClass(props.orderSm, breakpoints[0]);
-  addOrderClass(props.orderMd, breakpoints[1]);
-  addOrderClass(props.orderLg, breakpoints[2]);
-  addOrderClass(props.orderXl, breakpoints[3]);
-  addOrderClass(props.orderXxl, breakpoints[4]);
+  addOrderClass(props.orderSm, 'sm');
+  addOrderClass(props.orderMd, 'md');
+  addOrderClass(props.orderLg, 'lg');
+  addOrderClass(props.orderXl, 'xl');
+  addOrderClass(props.orderXxl, 'xxl');
 
   if (props.alignSelf) classes.push(`align-self-${props.alignSelf}`);
 
