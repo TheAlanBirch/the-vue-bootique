@@ -1,4 +1,7 @@
 import { defineNuxtConfig } from 'nuxt/config';
+import { fileURLToPath } from 'node:url';
+
+const eslintConfigFile = fileURLToPath(new URL('./eslint.config.mjs', import.meta.url));
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -12,6 +15,9 @@ export default defineNuxtConfig({
     '@nuxt/test-utils/module',
     '@nuxtjs/eslint-module',
   ],
+  eslint: {
+    overrideConfigFile: eslintConfigFile,
+  },
   colorMode: {
     classSuffix: '',
     preference: 'system',
