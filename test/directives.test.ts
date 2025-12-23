@@ -204,7 +204,7 @@ describe('v-popover', () => {
 
   it('disposes the popover on unmount', async () => {
     const wrapper = mount({
-      template: "<button v-popover=\"'Bye'\">Action</button>",
+      template: '<button v-popover="\'Bye\'">Action</button>',
       directives: { popover: vPopover },
     });
 
@@ -242,7 +242,7 @@ describe('v-toggle', () => {
     document.body.appendChild(target);
 
     const wrapper = mount({
-      template: "<button v-toggle=\"'#collapseTarget'\">Toggle</button>",
+      template: '<button v-toggle="\'#collapseTarget\'">Toggle</button>',
       directives: { toggle: vToggle },
     }, { attachTo: document.body });
 
