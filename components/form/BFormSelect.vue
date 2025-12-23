@@ -12,12 +12,7 @@
       @change="onChange"
     >
       <option v-if="placeholder" disabled value="">{{ placeholder }}</option>
-      <option
-        v-for="option in options"
-        :key="option.value"
-        :value="option.value"
-        :disabled="option.disabled"
-      >
+      <option v-for="option in options" :key="String(option.value)" :value="option.value" :disabled="option.disabled">
         {{ option.label }}
       </option>
     </select>
