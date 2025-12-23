@@ -21,6 +21,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   iconNames.forEach((icon) => {
     const componentName = `BIcon${toPascalCase(icon)}`;
+    if (componentName === 'BIcon' || componentName === 'BIconStack') return;
     app.component(
       componentName,
       defineComponent({
