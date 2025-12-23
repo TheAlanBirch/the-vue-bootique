@@ -1,34 +1,9 @@
 import type { Directive, DirectiveBinding } from 'vue';
 import Tooltip from 'bootstrap/js/dist/tooltip';
+import type { TooltipOptions } from 'bootstrap/js/dist/tooltip';
 
-export type TooltipPlacement =
-  | 'auto'
-  | 'auto-start'
-  | 'auto-end'
-  | 'top'
-  | 'bottom'
-  | 'left'
-  | 'right'
-  | 'top-start'
-  | 'top-end'
-  | 'bottom-start'
-  | 'bottom-end'
-  | 'left-start'
-  | 'left-end'
-  | 'right-start'
-  | 'right-end';
-
-export interface TooltipDirectiveOptions {
-  title?: string | Element | (() => string | Element);
-  placement?: TooltipPlacement;
-  trigger?: string;
-  delay?: number | { show: number; hide: number };
-  html?: boolean;
-  container?: string | false | Element;
-  boundary?: 'clippingParents' | 'viewport' | 'window' | Element;
-  customClass?: string | ((...args: any[]) => string);
-  offset?: [number, number] | string;
-}
+export type TooltipPlacement = TooltipOptions['placement'];
+export type TooltipDirectiveOptions = TooltipOptions;
 
 export type TooltipBindingValue =
   | string

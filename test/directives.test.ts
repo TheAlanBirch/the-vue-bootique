@@ -66,7 +66,7 @@ describe('v-tooltip', () => {
 
   it('disposes the tooltip on unmount', async () => {
     const wrapper = mount({
-      template: '<button v-tooltip=\"\'Bye\'\">Action</button>',
+      template: "<button v-tooltip=\"'Bye'\">Action</button>",
       directives: { tooltip: vTooltip },
     });
 
