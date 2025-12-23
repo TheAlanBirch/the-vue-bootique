@@ -16,20 +16,23 @@
 </template>
 
 <script lang="ts" setup>
+import BCardSubTitle from './BCardSubTitle.vue';
+import BCardTitle from './BCardTitle.vue';
+
 defineProps({
   bodyTag: {
     type: String,
-    default: "div",
+    default: 'div',
   },
   subTitle: String,
   subTitleTag: {
     type: String,
-    default: "h6",
+    default: 'h6',
   },
   title: String,
   titleTag: {
     type: String,
-    default: "h4",
+    default: 'h4',
   },
 });
 </script>
