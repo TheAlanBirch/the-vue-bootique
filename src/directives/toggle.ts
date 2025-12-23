@@ -82,9 +82,10 @@ const applyToggle = (el: HTMLElement, binding: DirectiveBinding<ToggleTarget>): 
     return;
   }
 
+  const collapse = getCollapse(target);
+
   const handler = (event: Event) => {
     event.preventDefault();
-    const collapse = getCollapse(target);
     collapse.toggle();
   };
 
