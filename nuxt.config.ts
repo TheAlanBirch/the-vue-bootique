@@ -8,8 +8,13 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/content',
     '@pinia/nuxt',
-    ['@nuxtjs/color-mode', { colorMode: { classSuffix: '' } }],
+    '@nuxtjs/color-mode',
     '@nuxt/test-utils/module',
     '@nuxtjs/eslint-module',
   ],
+  colorMode: {
+    classSuffix: '',
+    preference: 'system',
+    fallback: 'light',
+  },
 });
