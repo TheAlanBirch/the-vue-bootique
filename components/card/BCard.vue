@@ -1,8 +1,15 @@
 <template>
-  <!-- TODO: Add remaining props -->
-  <div class="card">
+  <article class="card">
+    <b-card-img
+      v-if="imgSrc && imagePosition === 'top'"
+      :src="imgSrc"
+      :alt="imgAlt"
+      :height="imgHeight"
+      :width="imgWidth"
+      position="top"
+    />
     <div :class="cardClasses">
-      <div :class="{ 'col-md-4 ': isHorizontalCard, col: !isHorizontalCard }">
+      <div v-if="isHorizontalCard" class="col-md-4">
         <b-card-img
           v-if="imgSrc"
           :position="imagePosition"
@@ -36,75 +43,84 @@
         </b-card-footer>
       </div>
     </div>
-  </div>
+    <b-card-img
+      v-if="imgSrc && imagePosition === 'bottom'"
+      :src="imgSrc"
+      :alt="imgAlt"
+      :height="imgHeight"
+      :width="imgWidth"
+      position="bottom"
+    />
+  </article>
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  header: String,
-  headerTag: {
-    type: String,
-    default: 'div',
+import { computed } from 'vue';
+import { resolveBooleanish } from '@/composables/useBooleanish';
+import BCardBody from './BCardBody.vue';
+import BCardFooter from './BCardFooter.vue';
+import BCardHeader from './BCardHeader.vue';
+import BCardImg from './BCardImg.vue';
+
+defineOptions({ name: 'BCard' });
+
+const props = withDefaults(
+  defineProps<{
+    header?: string;
+    headerTag?: string;
+    bodyTag?: string;
+    footer?: string;
+    footerTag?: string;
+    title?: string;
+    titleTag?: string;
+    subTitle?: string;
+    subTitleTag?: string;
+    imgSrc?: string;
+    imgAlt?: string;
+    imgTop?: boolean;
+    imgBottom?: boolean;
+    imgLeft?: boolean;
+    imgRight?: boolean;
+    imgWidth?: number | string;
+    imgHeight?: number | string;
+    noBody?: boolean;
+  }>(),
+  {
+    headerTag: 'div',
+    bodyTag: 'div',
+    footerTag: 'div',
+    titleTag: 'h4',
+    subTitleTag: 'h6',
+    imgTop: false,
+    imgBottom: false,
+    imgLeft: false,
+    imgRight: false,
+    noBody: false,
   },
-  bodyTag: {
-    type: String,
-    default: 'div',
-  },
-  footer: String,
-  footerTag: {
-    type: String,
-    default: 'div',
-  },
-  title: String,
-  titleTag: {
-    type: String,
-    default: 'h4',
-  },
-  subTitle: String,
-  subTitleTag: {
-    type: String,
-    default: 'h6',
-  },
-  imgSrc: String,
-  imgAlt: String,
-  imgTop: {
-    type: Boolean,
-    default: false,
-  },
-  imgBottom: {
-    type: Boolean,
-    default: false,
-  },
-  imgLeft: {
-    type: Boolean,
-    default: false,
-  },
-  imgRight: {
-    type: Boolean,
-    default: false,
-  },
-  imgWidth: [Number, String],
-  imgHeight: [Number, String],
-  noBody: Boolean,
-});
+);
 
 const isHorizontalCard = computed(() => {
   return !!props.imgLeft || !!props.imgRight;
 });
 
-const imagePosition = computed(() => {
+const imagePosition = computed<'top' | 'bottom' | 'left' | 'right'>(() => {
+  const flags = [props.imgTop, props.imgBottom, props.imgLeft, props.imgRight].filter(Boolean).length;
+  if (flags > 1) {
+    console.warn('[the-vue-bootique] Multiple image position props set on BCard. Using first truthy in priority bottom > left > right > top.');
+  }
   if (props.imgBottom) return 'bottom';
   if (props.imgLeft) return 'left';
   if (props.imgRight) return 'right';
+  if (props.imgTop) return 'top';
   return 'top';
 });
 
 const cardClasses = computed(() => ({
-  'row g-0': true,
-  'flex-column': !isHorizontalCard.value,
+  row: isHorizontalCard.value,
+  'g-0': isHorizontalCard.value,
   'flex-row-reverse': props.imgRight,
-  'flex-column-reverse': props.imgBottom,
+  'align-items-center': isHorizontalCard.value,
 }));
-</script>
 
-<style></style>
+const noBody = computed(() => resolveBooleanish(props.noBody));
+</script>

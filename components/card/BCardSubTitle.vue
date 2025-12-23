@@ -9,6 +9,8 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, useSlots } from 'vue';
+
 const props = defineProps({
   subTitle: String,
   subTitleTag: {

@@ -3,6 +3,8 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
+
 const props = defineProps({
   src: String,
   alt: String,
