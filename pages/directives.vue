@@ -20,7 +20,7 @@
       </ul>
     </b-navbar>
 
-    <section class="mt-3">
+    <section id="directives" class="mt-5">
       <div class="d-flex align-items-center gap-2 mb-3">
         <b-icon-lightning-charge-fill />
         <h2 class="mb-0">Directives</h2>
@@ -32,22 +32,23 @@
       <div class="row g-4">
         <div class="col-md-4">
           <div class="d-flex flex-column gap-3">
-            <b-button v-tooltip="'Save your changes'" variant="outline-primary">
+            <b-button v-tooltip="'Save your changes'" variant="primary" outline>
               Tooltip (v-tooltip)
             </b-button>
             <b-button
               v-popover="{ title: 'Popover', content: 'Rich content goes here.' }"
-              variant="outline-secondary"
+              variant="secondary"
+              outline
             >
               Popover (v-popover)
             </b-button>
-            <b-form-input v-model="focusValue" v-focus placeholder="Auto-focused input (v-focus)" />
+            <b-form-input v-model="focusedInput" v-focus placeholder="Auto-focused input (v-focus)" />
           </div>
         </div>
 
         <div class="col-md-4">
           <div class="d-grid gap-2">
-            <b-button v-toggle="'#directiveCollapse'" variant="outline-success">
+            <b-button v-toggle="'#directiveCollapse'" variant="success" outline>
               Toggle Details (v-toggle)
             </b-button>
             <div id="directiveCollapse" class="collapse show border rounded p-3">
@@ -100,8 +101,8 @@
 </template>
 
 <script lang="ts" setup>
-import { vFocus, vPopover, vScrollspy, vToggle, vTooltip } from '../src/directives';
 import { ref } from 'vue';
+import { vFocus, vPopover, vScrollspy, vToggle, vTooltip } from '../src/directives';
 
-const focusValue = ref('');
+const focusedInput = ref('');
 </script>

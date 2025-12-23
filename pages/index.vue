@@ -5,7 +5,7 @@
         <span class="d-flex align-items-center gap-2">
           <b-icon-flower2 />
           <span>Vue Bootique</span>
-       </span>
+        </span>
       </template>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
@@ -64,7 +64,6 @@
         <b-button type="submit" variant="primary" :disabled="!form.accepted">Submit</b-button>
       </div>
     </form>
-
   </div>
 </template>
 

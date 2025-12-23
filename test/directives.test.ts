@@ -9,20 +9,63 @@ import { vScrollspy } from '../src/directives/scrollspy';
 import { vTooltip } from '../src/directives/tooltip';
 import { vToggle } from '../src/directives/toggle';
 
-type MockOptions = Record<string, unknown> | undefined;
+// Define types for Bootstrap options
+interface TooltipOptions {
+  title?: string | Element | (() => string | Element);
+  placement?:
+    | 'auto'
+    | 'auto-start'
+    | 'auto-end'
+    | 'top'
+    | 'bottom'
+    | 'left'
+    | 'right'
+    | 'top-start'
+    | 'top-end'
+    | 'bottom-start'
+    | 'bottom-end'
+    | 'left-start'
+    | 'left-end'
+    | 'right-start'
+    | 'right-end';
+  trigger?: string;
+  delay?: number | { show: number; hide: number };
+  html?: boolean;
+  container?: string | false | Element;
+  boundary?: 'clippingParents' | 'viewport' | 'window' | Element;
+  customClass?: string | ((...args: unknown[]) => string);
+  offset?: [number, number] | string;
+}
+
+interface PopoverOptions extends TooltipOptions {
+  content?: string | Element | (() => string | Element);
+}
+
+interface ScrollSpyOptions {
+  offset?: number;
+  method?: string;
+  target?: string | Element;
+}
+
+interface CollapseOptions {
+  toggle?: boolean;
+  parent?: string | Element;
+}
 
 vi.mock('bootstrap/js/dist/tooltip', () => {
-  const instances = new WeakMap<Element, TooltipMock>();
-
+  // Define mock classes with proper typing
   class TooltipMock {
     public disposed = false;
-    static instances = instances;
+    static instances = new WeakMap<Element, TooltipMock>();
 
     static getInstance(element: Element): TooltipMock | null {
       return TooltipMock.instances.get(element) ?? null;
     }
 
-    constructor(public element: Element, public options?: MockOptions) {
+    constructor(
+      public element: Element,
+      public options?: TooltipOptions,
+    ) {
       TooltipMock.instances.set(element, this);
     }
 
@@ -36,17 +79,19 @@ vi.mock('bootstrap/js/dist/tooltip', () => {
 });
 
 vi.mock('bootstrap/js/dist/popover', () => {
-  const instances = new WeakMap<Element, PopoverMock>();
-
+  // Define mock classes with proper typing
   class PopoverMock {
     public disposed = false;
-    static instances = instances;
+    static instances = new WeakMap<Element, PopoverMock>();
 
     static getInstance(element: Element): PopoverMock | null {
       return PopoverMock.instances.get(element) ?? null;
     }
 
-    constructor(public element: Element, public options?: MockOptions) {
+    constructor(
+      public element: Element,
+      public options?: PopoverOptions,
+    ) {
       PopoverMock.instances.set(element, this);
     }
 
@@ -60,17 +105,19 @@ vi.mock('bootstrap/js/dist/popover', () => {
 });
 
 vi.mock('bootstrap/js/dist/scrollspy', () => {
-  const instances = new WeakMap<Element, ScrollSpyMock>();
-
+  // Define mock classes with proper typing
   class ScrollSpyMock {
     public disposed = false;
-    static instances = instances;
+    static instances = new WeakMap<Element, ScrollSpyMock>();
 
     static getInstance(element: Element): ScrollSpyMock | null {
       return ScrollSpyMock.instances.get(element) ?? null;
     }
 
-    constructor(public element: Element, public options?: MockOptions) {
+    constructor(
+      public element: Element,
+      public options?: ScrollSpyOptions,
+    ) {
       ScrollSpyMock.instances.set(element, this);
     }
 
@@ -86,38 +133,40 @@ vi.mock('bootstrap/js/dist/scrollspy', () => {
 });
 
 vi.mock('bootstrap/js/dist/collapse', () => {
-  const instances = new WeakMap<Element, CollapseMock>();
-
+  // Define mock classes with proper typing
   class CollapseMock {
     public disposed = false;
     public toggleCount = 0;
     public showCount = 0;
     public hideCount = 0;
-    static instances = instances;
+    static instances = new WeakMap<Element, CollapseMock>();
 
     static getInstance(element: Element): CollapseMock | null {
       return CollapseMock.instances.get(element) ?? null;
     }
 
-    constructor(public element: Element, public options?: MockOptions) {
+    constructor(
+      public element: Element,
+      public options?: CollapseOptions,
+    ) {
       CollapseMock.instances.set(element, this);
-    }
-
-    toggle(): void {
-      this.toggleCount += 1;
-    }
-
-    show(): void {
-      this.showCount += 1;
-    }
-
-    hide(): void {
-      this.hideCount += 1;
     }
 
     dispose(): void {
       this.disposed = true;
       CollapseMock.instances.delete(this.element);
+    }
+
+    toggle(): void {
+      this.toggleCount++;
+    }
+
+    show(): void {
+      this.showCount++;
+    }
+
+    hide(): void {
+      this.hideCount++;
     }
   }
 
@@ -126,26 +175,22 @@ vi.mock('bootstrap/js/dist/collapse', () => {
 
 const getTooltipInstance = async (el: Element) => {
   const module = await import('bootstrap/js/dist/tooltip');
-  const TooltipMock = module.default as any;
-  return TooltipMock.getInstance(el);
+  return module.default.getInstance(el);
 };
 
 const getPopoverInstance = async (el: Element) => {
   const module = await import('bootstrap/js/dist/popover');
-  const PopoverMock = module.default as any;
-  return PopoverMock.getInstance(el);
+  return module.default.getInstance(el);
 };
 
 const getScrollspyInstance = async (el: Element) => {
   const module = await import('bootstrap/js/dist/scrollspy');
-  const ScrollSpyMock = module.default as any;
-  return ScrollSpyMock.getInstance(el);
+  return module.default.getInstance(el);
 };
 
 const getCollapseInstance = async (el: Element) => {
   const module = await import('bootstrap/js/dist/collapse');
-  const CollapseMock = module.default as any;
-  return CollapseMock.getInstance(el);
+  return module.default.getInstance(el);
 };
 
 /** Microtask helper to let async directive mounts settle before assertions. */
@@ -163,7 +208,8 @@ describe('v-tooltip', () => {
     await flush();
 
     const instance = await getTooltipInstance(wrapper.get('button').element);
-    expect(instance?.options.title).toBe('Save changes');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((instance as any)?.options?.title).toBe('Save changes');
   });
 
   it('updates tooltip options on binding change', async () => {
@@ -179,13 +225,15 @@ describe('v-tooltip', () => {
     const button = wrapper.get('button').element;
     await nextTick();
     await flush();
-    expect((await getTooltipInstance(button))?.options.title).toBe('First');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(((await getTooltipInstance(button)) as any)?.options.title).toBe('First');
 
     label.value = 'Updated';
     await nextTick();
     await flush();
 
-    expect((await getTooltipInstance(button))?.options.title).toBe('Updated');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(((await getTooltipInstance(button)) as any)?.options.title).toBe('Updated');
   });
 
   it('disposes the tooltip on unmount', async () => {
@@ -202,7 +250,8 @@ describe('v-tooltip', () => {
     wrapper.unmount();
     await flush();
 
-    expect(instance?.disposed).toBe(true);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((instance as any)?.disposed).toBe(true);
     expect(await getTooltipInstance(button)).toBeNull();
   });
 });
@@ -219,7 +268,8 @@ describe('v-popover', () => {
     await flush();
 
     const instance = await getPopoverInstance(wrapper.get('button').element);
-    expect(instance?.options.content).toBe('Details');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((instance as any)?.options.content).toBe('Details');
   });
 
   it('disposes the popover on unmount', async () => {
@@ -236,7 +286,8 @@ describe('v-popover', () => {
     wrapper.unmount();
     await flush();
 
-    expect(instance?.disposed).toBe(true);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((instance as any)?.disposed).toBe(true);
     expect(await getPopoverInstance(button)).toBeNull();
   });
 });
@@ -252,11 +303,14 @@ describe('v-scrollspy', () => {
     await nextTick();
     await flush();
     const instance = await getScrollspyInstance(el);
-    expect(instance?.options.target).toBe('#nav');
-    expect(instance?.options.offset).toBe(10);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((instance as any)?.options.target).toBe('#nav');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((instance as any)?.options.offset).toBe(10);
 
     wrapper.unmount();
-    expect(instance?.disposed).toBe(true);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((instance as any)?.disposed).toBe(true);
   });
 });
 
@@ -280,7 +334,8 @@ describe('v-toggle', () => {
     await button.trigger('click');
 
     const instance = await getCollapseInstance(target);
-    expect(instance?.toggleCount).toBe(1);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect((instance as any)?.toggleCount).toBe(1);
 
     wrapper.unmount();
     target.remove();
