@@ -4,6 +4,9 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   plugins: [vue()],
+  define: {
+    'import.meta.test': 'true',
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './'),
