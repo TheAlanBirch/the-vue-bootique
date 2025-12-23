@@ -41,8 +41,11 @@ const props = withDefaults(
 const colClasses = computed(() => {
   const classes: string[] = [];
 
-  const addColClass = (value: number | string | boolean | undefined, breakpoint?: Breakpoint) => {
-    if (value === undefined || value === null || value === false) return null;
+  const addColClass = (
+    value: number | string | boolean | undefined,
+    breakpoint?: Breakpoint,
+  ): string | null => {
+    if (value === undefined || value === null || value === false || value === '') return null;
     const prefix = breakpoint ? `col-${breakpoint}` : 'col';
     if (value === true) return prefix;
     if (value === 'auto') return `${prefix}-auto`;
@@ -65,7 +68,11 @@ const colClasses = computed(() => {
   };
 
   const baseCol = addColClass(props.cols);
-  classes.push(baseCol ?? 'col');
+  if (baseCol) {
+    classes.push(baseCol);
+  } else if (props.cols === undefined || props.cols === null) {
+    classes.push('col');
+  }
 
   const colSm = addColClass(props.sm, 'sm');
   const colMd = addColClass(props.md, 'md');
