@@ -56,8 +56,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void;
-  (e: 'open'): void;
-  (e: 'close'): void;
+  (e: 'open' | 'close'): void;
 }>();
 
 const id = useUniqueId('b-modal');
