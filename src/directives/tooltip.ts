@@ -1,5 +1,5 @@
 import type { Directive, DirectiveBinding } from 'vue';
-import Tooltip from 'bootstrap/js/dist/tooltip';
+import type TooltipType from 'bootstrap/js/dist/tooltip';
 import type { TooltipOptions } from 'bootstrap/js/dist/tooltip';
 
 export type TooltipPlacement = TooltipOptions['placement'];
@@ -12,7 +12,15 @@ export type TooltipBindingValue =
   | null
   | undefined;
 
-type TooltipInstance = InstanceType<typeof Tooltip>;
+type TooltipInstance = InstanceType<typeof TooltipType>;
+
+let tooltipCtorPromise: Promise<typeof TooltipType> | null = null;
+const loadTooltip = () => {
+  if (!tooltipCtorPromise) {
+    tooltipCtorPromise = import('bootstrap/js/dist/tooltip').then((m) => m.default);
+  }
+  return tooltipCtorPromise;
+};
 
 const tooltipInstances = new WeakMap<HTMLElement, TooltipInstance>();
 
@@ -46,10 +54,10 @@ const disposeTooltip = (el: HTMLElement): void => {
   }
 };
 
-const applyTooltip = (
+const applyTooltip = async (
   el: HTMLElement,
   binding: DirectiveBinding<TooltipBindingValue>,
-): void => {
+): Promise<void> => {
   if (typeof window === 'undefined') {
     return;
   }
@@ -62,17 +70,17 @@ const applyTooltip = (
 
   disposeTooltip(el);
 
-  // Assumes Bootstrap's Tooltip module (and Popper) are available to the consumer bundle; this directive only wires DOM behavior.
+  const Tooltip = await loadTooltip();
   const instance = new Tooltip(el, options);
   tooltipInstances.set(el, instance);
 };
 
 export const vTooltip: Directive<HTMLElement, TooltipBindingValue> = {
-  mounted(el, binding) {
-    applyTooltip(el, binding);
+  async mounted(el, binding) {
+    await applyTooltip(el, binding);
   },
-  updated(el, binding) {
-    applyTooltip(el, binding);
+  async updated(el, binding) {
+    await applyTooltip(el, binding);
   },
   unmounted(el) {
     disposeTooltip(el);

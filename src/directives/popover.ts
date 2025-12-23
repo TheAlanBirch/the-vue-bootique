@@ -1,5 +1,5 @@
 import type { Directive, DirectiveBinding } from 'vue';
-import Popover from 'bootstrap/js/dist/popover';
+import type PopoverType from 'bootstrap/js/dist/popover';
 import type { PopoverOptions } from 'bootstrap/js/dist/popover';
 
 export type PopoverBindingValue =
@@ -9,7 +9,15 @@ export type PopoverBindingValue =
   | null
   | undefined;
 
-type PopoverInstance = InstanceType<typeof Popover>;
+type PopoverInstance = InstanceType<typeof PopoverType>;
+
+let popoverCtorPromise: Promise<typeof PopoverType> | null = null;
+const loadPopover = () => {
+  if (!popoverCtorPromise) {
+    popoverCtorPromise = import('bootstrap/js/dist/popover').then((m) => m.default);
+  }
+  return popoverCtorPromise;
+};
 
 const popoverInstances = new WeakMap<HTMLElement, PopoverInstance>();
 
@@ -43,10 +51,10 @@ const disposePopover = (el: HTMLElement): void => {
   }
 };
 
-const applyPopover = (
+const applyPopover = async (
   el: HTMLElement,
   binding: DirectiveBinding<PopoverBindingValue>,
-): void => {
+): Promise<void> => {
   if (typeof window === 'undefined') {
     return;
   }
@@ -58,16 +66,17 @@ const applyPopover = (
   }
 
   disposePopover(el);
+  const Popover = await loadPopover();
   const instance = new Popover(el, options);
   popoverInstances.set(el, instance);
 };
 
 export const vPopover: Directive<HTMLElement, PopoverBindingValue> = {
-  mounted(el, binding) {
-    applyPopover(el, binding);
+  async mounted(el, binding) {
+    await applyPopover(el, binding);
   },
-  updated(el, binding) {
-    applyPopover(el, binding);
+  async updated(el, binding) {
+    await applyPopover(el, binding);
   },
   unmounted(el) {
     disposePopover(el);

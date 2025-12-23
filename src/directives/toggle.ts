@@ -1,9 +1,17 @@
 import type { Directive, DirectiveBinding } from 'vue';
-import Collapse from 'bootstrap/js/dist/collapse';
+import type CollapseType from 'bootstrap/js/dist/collapse';
 
 export type ToggleTarget = string | HTMLElement | null | undefined;
 
-type CollapseInstance = InstanceType<typeof Collapse>;
+type CollapseInstance = InstanceType<typeof CollapseType>;
+
+let collapseCtorPromise: Promise<typeof CollapseType> | null = null;
+const loadCollapse = () => {
+  if (!collapseCtorPromise) {
+    collapseCtorPromise = import('bootstrap/js/dist/collapse').then((m) => m.default);
+  }
+  return collapseCtorPromise;
+};
 
 const collapseInstances = new WeakMap<HTMLElement, CollapseInstance>();
 const triggerHandlers = new WeakMap<HTMLElement, (event: Event) => void>();
@@ -27,9 +35,10 @@ const resolveTarget = (binding: DirectiveBinding<ToggleTarget>): HTMLElement | n
   return null;
 };
 
-const getCollapse = (target: HTMLElement): CollapseInstance => {
+const getCollapse = async (target: HTMLElement): Promise<CollapseInstance> => {
   let instance = collapseInstances.get(target);
   if (!instance) {
+    const Collapse = await loadCollapse();
     instance = new Collapse(target, { toggle: false });
     collapseInstances.set(target, instance);
     collapseRefCounts.set(target, 0);
@@ -70,7 +79,7 @@ const cleanupTrigger = (el: HTMLElement): void => {
   }
 };
 
-const applyToggle = (el: HTMLElement, binding: DirectiveBinding<ToggleTarget>): void => {
+const applyToggle = async (el: HTMLElement, binding: DirectiveBinding<ToggleTarget>): Promise<void> => {
   if (typeof window === 'undefined') {
     return;
   }
@@ -82,7 +91,7 @@ const applyToggle = (el: HTMLElement, binding: DirectiveBinding<ToggleTarget>): 
     return;
   }
 
-  const collapse = getCollapse(target);
+  const collapse = await getCollapse(target);
 
   const handler = (event: Event) => {
     event.preventDefault();
@@ -95,11 +104,11 @@ const applyToggle = (el: HTMLElement, binding: DirectiveBinding<ToggleTarget>): 
 };
 
 export const vToggle: Directive<HTMLElement, ToggleTarget> = {
-  mounted(el, binding) {
-    applyToggle(el, binding);
+  async mounted(el, binding) {
+    await applyToggle(el, binding);
   },
-  updated(el, binding) {
-    applyToggle(el, binding);
+  async updated(el, binding) {
+    await applyToggle(el, binding);
   },
   unmounted(el) {
     cleanupTrigger(el);

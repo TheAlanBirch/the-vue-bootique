@@ -2,75 +2,150 @@
 
 import { mount } from '@vue/test-utils';
 import { nextTick, ref } from 'vue';
-import { vi } from 'vitest';
 import { vFocus } from '../src/directives/focus';
 import { vPopover } from '../src/directives/popover';
 import { vScrollspy } from '../src/directives/scrollspy';
 import { vTooltip } from '../src/directives/tooltip';
 import { vToggle } from '../src/directives/toggle';
 
-// Import the mocked modules
-import Tooltip from 'bootstrap/js/dist/tooltip';
-import Popover from 'bootstrap/js/dist/popover';
-import ScrollSpy from 'bootstrap/js/dist/scrollspy';
-import Collapse from 'bootstrap/js/dist/collapse';
+vi.mock('bootstrap/js/dist/tooltip', () => {
+  const instances = new WeakMap<Element, any>();
 
-// Mock Bootstrap modules
-vi.mock('bootstrap/js/dist/tooltip', () => ({
-  default: vi.fn().mockImplementation((element: Element, options?: Record<string, unknown>) => ({
-    element,
-    options,
-    dispose: vi.fn(),
-  })),
-}));
+  class TooltipMock {
+    public disposed = false;
+    static instances = instances;
 
-vi.mock('bootstrap/js/dist/popover', () => ({
-  default: vi.fn().mockImplementation((element: Element, options?: Record<string, unknown>) => ({
-    element,
-    options,
-    dispose: vi.fn(),
-  })),
-}));
+    static getInstance(element: Element): TooltipMock | null {
+      return TooltipMock.instances.get(element) ?? null;
+    }
 
-vi.mock('bootstrap/js/dist/scrollspy', () => ({
-  default: vi.fn().mockImplementation((element: Element, options?: Record<string, unknown>) => ({
-    element,
-    options,
-    dispose: vi.fn(),
-    refresh: vi.fn(),
-  })),
-}));
+    constructor(public element: Element, public options?: any) {
+      TooltipMock.instances.set(element, this);
+    }
 
-vi.mock('bootstrap/js/dist/collapse', () => ({
-  default: vi.fn().mockImplementation((element: Element, options?: Record<string, unknown>) => ({
-    element,
-    options,
-    dispose: vi.fn(),
-    toggle: vi.fn(),
-    show: vi.fn(),
-    hide: vi.fn(),
-  })),
-}));
+    dispose(): void {
+      this.disposed = true;
+      TooltipMock.instances.delete(this.element);
+    }
+  }
 
-const getTooltipInstance = (el: Element) => {
-  return (Tooltip as unknown as ReturnType<typeof vi.fn>).mock.results.find((result) => result.value.element === el)
-    ?.value;
+  return { default: TooltipMock };
+});
+
+vi.mock('bootstrap/js/dist/popover', () => {
+  const instances = new WeakMap<Element, any>();
+
+  class PopoverMock {
+    public disposed = false;
+    static instances = instances;
+
+    static getInstance(element: Element): PopoverMock | null {
+      return PopoverMock.instances.get(element) ?? null;
+    }
+
+    constructor(public element: Element, public options?: any) {
+      PopoverMock.instances.set(element, this);
+    }
+
+    dispose(): void {
+      this.disposed = true;
+      PopoverMock.instances.delete(this.element);
+    }
+  }
+
+  return { default: PopoverMock };
+});
+
+vi.mock('bootstrap/js/dist/scrollspy', () => {
+  const instances = new WeakMap<Element, any>();
+
+  class ScrollSpyMock {
+    public disposed = false;
+    static instances = instances;
+
+    static getInstance(element: Element): ScrollSpyMock | null {
+      return ScrollSpyMock.instances.get(element) ?? null;
+    }
+
+    constructor(public element: Element, public options?: any) {
+      ScrollSpyMock.instances.set(element, this);
+    }
+
+    dispose(): void {
+      this.disposed = true;
+      ScrollSpyMock.instances.delete(this.element);
+    }
+
+    refresh(): void {}
+  }
+
+  return { default: ScrollSpyMock };
+});
+
+vi.mock('bootstrap/js/dist/collapse', () => {
+  const instances = new WeakMap<Element, any>();
+
+  class CollapseMock {
+    public disposed = false;
+    public toggleCount = 0;
+    public showCount = 0;
+    public hideCount = 0;
+    static instances = instances;
+
+    static getInstance(element: Element): CollapseMock | null {
+      return CollapseMock.instances.get(element) ?? null;
+    }
+
+    constructor(public element: Element, public options?: any) {
+      CollapseMock.instances.set(element, this);
+    }
+
+    toggle(): void {
+      this.toggleCount += 1;
+    }
+
+    show(): void {
+      this.showCount += 1;
+    }
+
+    hide(): void {
+      this.hideCount += 1;
+    }
+
+    dispose(): void {
+      this.disposed = true;
+      CollapseMock.instances.delete(this.element);
+    }
+  }
+
+  return { default: CollapseMock };
+});
+
+const getTooltipInstance = async (el: Element) => {
+  const module = await import('bootstrap/js/dist/tooltip');
+  const TooltipMock = module.default as any;
+  return TooltipMock.getInstance(el);
 };
 
-const getPopoverInstance = (el: Element) => {
-  return (Popover as unknown as ReturnType<typeof vi.fn>).mock.results.find((result) => result.value.element === el)
-    ?.value;
+const getPopoverInstance = async (el: Element) => {
+  const module = await import('bootstrap/js/dist/popover');
+  const PopoverMock = module.default as any;
+  return PopoverMock.getInstance(el);
 };
 
-const getScrollspyInstance = (el: Element) => {
-  return (ScrollSpy as unknown as ReturnType<typeof vi.fn>).mock.results.find((result) => result.value.element === el)
-    ?.value;
+const getScrollspyInstance = async (el: Element) => {
+  const module = await import('bootstrap/js/dist/scrollspy');
+  const ScrollSpyMock = module.default as any;
+  return ScrollSpyMock.getInstance(el);
 };
 
-const getCollapseInstance = (el: Element) => {
-  return (Collapse as unknown as ReturnType<typeof vi.fn>).mock.results.find((result) => result.value.element === el)
-    ?.value;
+const getCollapseInstance = async (el: Element) => {
+  const module = await import('bootstrap/js/dist/collapse');
+  const CollapseMock = module.default as any;
+  return CollapseMock.getInstance(el);
 };
+
+const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 describe('v-tooltip', () => {
   it('creates a tooltip from a string binding', async () => {
@@ -79,6 +154,9 @@ describe('v-tooltip', () => {
       data: () => ({ text: 'Save changes' }),
       directives: { tooltip: vTooltip },
     });
+
+    await nextTick();
+    await flush();
 
     const instance = await getTooltipInstance(wrapper.get('button').element);
     expect(instance?.options.title).toBe('Save changes');
@@ -95,10 +173,13 @@ describe('v-tooltip', () => {
     });
 
     const button = wrapper.get('button').element;
+    await nextTick();
+    await flush();
     expect((await getTooltipInstance(button))?.options.title).toBe('First');
 
     label.value = 'Updated';
     await nextTick();
+    await flush();
 
     expect((await getTooltipInstance(button))?.options.title).toBe('Updated');
   });
@@ -110,9 +191,12 @@ describe('v-tooltip', () => {
     });
 
     const button = wrapper.get('button').element;
+    await nextTick();
+    await flush();
     const instance = await getTooltipInstance(button);
 
     wrapper.unmount();
+    await flush();
 
     expect(instance?.disposed).toBe(true);
     expect(await getTooltipInstance(button)).toBeNull();
@@ -127,6 +211,9 @@ describe('v-popover', () => {
       directives: { popover: vPopover },
     });
 
+    await nextTick();
+    await flush();
+
     const instance = await getPopoverInstance(wrapper.get('button').element);
     expect(instance?.options.content).toBe('Details');
   });
@@ -138,9 +225,12 @@ describe('v-popover', () => {
     });
 
     const button = wrapper.get('button').element;
+    await nextTick();
+    await flush();
     const instance = await getPopoverInstance(button);
 
     wrapper.unmount();
+    await flush();
 
     expect(instance?.disposed).toBe(true);
     expect(await getPopoverInstance(button)).toBeNull();
@@ -155,6 +245,8 @@ describe('v-scrollspy', () => {
     });
 
     const el = wrapper.get('div').element;
+    await nextTick();
+    await flush();
     const instance = await getScrollspyInstance(el);
     expect(instance?.options.target).toBe('#nav');
     expect(instance?.options.offset).toBe(10);
@@ -179,6 +271,8 @@ describe('v-toggle', () => {
     );
 
     const button = wrapper.get('button');
+    await nextTick();
+    await flush();
     await button.trigger('click');
 
     const instance = await getCollapseInstance(target);

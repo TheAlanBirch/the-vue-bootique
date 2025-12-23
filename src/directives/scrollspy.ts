@@ -1,10 +1,18 @@
 import type { Directive, DirectiveBinding } from 'vue';
-import ScrollSpy from 'bootstrap/js/dist/scrollspy';
+import type ScrollSpyType from 'bootstrap/js/dist/scrollspy';
 import type { ScrollSpyOptions } from 'bootstrap/js/dist/scrollspy';
 
 export type ScrollSpyBindingValue = ScrollSpyOptions | false | null | undefined;
 
-type ScrollSpyInstance = InstanceType<typeof ScrollSpy>;
+type ScrollSpyInstance = InstanceType<typeof ScrollSpyType>;
+
+let scrollSpyCtorPromise: Promise<typeof ScrollSpyType> | null = null;
+const loadScrollSpy = () => {
+  if (!scrollSpyCtorPromise) {
+    scrollSpyCtorPromise = import('bootstrap/js/dist/scrollspy').then((m) => m.default);
+  }
+  return scrollSpyCtorPromise;
+};
 
 const scrollSpyInstances = new WeakMap<HTMLElement, ScrollSpyInstance>();
 
@@ -32,10 +40,10 @@ const disposeScrollSpy = (el: HTMLElement): void => {
   }
 };
 
-const applyScrollSpy = (
+const applyScrollSpy = async (
   el: HTMLElement,
   binding: DirectiveBinding<ScrollSpyBindingValue>,
-): void => {
+): Promise<void> => {
   if (typeof window === 'undefined') {
     return;
   }
@@ -47,16 +55,17 @@ const applyScrollSpy = (
   }
 
   disposeScrollSpy(el);
+  const ScrollSpy = await loadScrollSpy();
   const instance = new ScrollSpy(el, options);
   scrollSpyInstances.set(el, instance);
 };
 
 export const vScrollspy: Directive<HTMLElement, ScrollSpyBindingValue> = {
-  mounted(el, binding) {
-    applyScrollSpy(el, binding);
+  async mounted(el, binding) {
+    await applyScrollSpy(el, binding);
   },
-  updated(el, binding) {
-    applyScrollSpy(el, binding);
+  async updated(el, binding) {
+    await applyScrollSpy(el, binding);
   },
   unmounted(el) {
     disposeScrollSpy(el);
