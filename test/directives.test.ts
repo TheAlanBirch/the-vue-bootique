@@ -9,8 +9,10 @@ import { vScrollspy } from '../src/directives/scrollspy';
 import { vTooltip } from '../src/directives/tooltip';
 import { vToggle } from '../src/directives/toggle';
 
+type MockOptions = Record<string, unknown> | undefined;
+
 vi.mock('bootstrap/js/dist/tooltip', () => {
-  const instances = new WeakMap<Element, any>();
+  const instances = new WeakMap<Element, TooltipMock>();
 
   class TooltipMock {
     public disposed = false;
@@ -20,7 +22,7 @@ vi.mock('bootstrap/js/dist/tooltip', () => {
       return TooltipMock.instances.get(element) ?? null;
     }
 
-    constructor(public element: Element, public options?: any) {
+    constructor(public element: Element, public options?: MockOptions) {
       TooltipMock.instances.set(element, this);
     }
 
@@ -34,7 +36,7 @@ vi.mock('bootstrap/js/dist/tooltip', () => {
 });
 
 vi.mock('bootstrap/js/dist/popover', () => {
-  const instances = new WeakMap<Element, any>();
+  const instances = new WeakMap<Element, PopoverMock>();
 
   class PopoverMock {
     public disposed = false;
@@ -44,7 +46,7 @@ vi.mock('bootstrap/js/dist/popover', () => {
       return PopoverMock.instances.get(element) ?? null;
     }
 
-    constructor(public element: Element, public options?: any) {
+    constructor(public element: Element, public options?: MockOptions) {
       PopoverMock.instances.set(element, this);
     }
 
@@ -58,7 +60,7 @@ vi.mock('bootstrap/js/dist/popover', () => {
 });
 
 vi.mock('bootstrap/js/dist/scrollspy', () => {
-  const instances = new WeakMap<Element, any>();
+  const instances = new WeakMap<Element, ScrollSpyMock>();
 
   class ScrollSpyMock {
     public disposed = false;
@@ -68,7 +70,7 @@ vi.mock('bootstrap/js/dist/scrollspy', () => {
       return ScrollSpyMock.instances.get(element) ?? null;
     }
 
-    constructor(public element: Element, public options?: any) {
+    constructor(public element: Element, public options?: MockOptions) {
       ScrollSpyMock.instances.set(element, this);
     }
 
@@ -84,7 +86,7 @@ vi.mock('bootstrap/js/dist/scrollspy', () => {
 });
 
 vi.mock('bootstrap/js/dist/collapse', () => {
-  const instances = new WeakMap<Element, any>();
+  const instances = new WeakMap<Element, CollapseMock>();
 
   class CollapseMock {
     public disposed = false;
@@ -97,7 +99,7 @@ vi.mock('bootstrap/js/dist/collapse', () => {
       return CollapseMock.instances.get(element) ?? null;
     }
 
-    constructor(public element: Element, public options?: any) {
+    constructor(public element: Element, public options?: MockOptions) {
       CollapseMock.instances.set(element, this);
     }
 
