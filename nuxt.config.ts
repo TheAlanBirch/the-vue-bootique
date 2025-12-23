@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/main.css'],
   components: [
-    '~/components',
+    { path: '~/components', pathPrefix: false, ignore: ['**/icon/**/*'] },
     '~/components/card',
     '~/components/base',
     '~/components/feedback',
@@ -17,13 +17,7 @@ export default defineNuxtConfig({
     '~/components/overlay',
     '~/components/layout',
   ],
-  modules: [
-    '@nuxt/content',
-    '@pinia/nuxt',
-    '@nuxtjs/color-mode',
-    '@nuxt/test-utils/module',
-    '@nuxtjs/eslint-module',
-  ],
+  modules: ['@nuxt/content', '@pinia/nuxt', '@nuxtjs/color-mode', '@nuxt/test-utils/module', '@nuxtjs/eslint-module'],
   eslint: {
     overrideConfigFile: eslintConfigFile,
   },
