@@ -20,8 +20,19 @@
         ></b-card-img>
       </div>
       <div class="col">
-        <b-card-header v-if="header" :header="header" :header-tag="headerTag" />
-        <b-card-header v-else-if="$slots.header" :header-tag="headerTag">
+        <b-card-header
+          v-if="header"
+          :header="header"
+          :header-tag="headerTag"
+          :variant="headerVariant"
+          :header-class="headerClass"
+        />
+        <b-card-header
+          v-else-if="$slots.header"
+          :header-tag="headerTag"
+          :variant="headerVariant"
+          :header-class="headerClass"
+        >
           <slot name="header"></slot>
         </b-card-header>
 
@@ -29,16 +40,29 @@
         <b-card-body
           v-else
           :body-tag="bodyTag"
+          :body-class="bodyClass"
           :sub-title="subTitle"
           :sub-title-tag="subTitleTag"
+          :sub-title-text-variant="subTitleTextVariant"
           :title="title"
           :title-tag="titleTag"
         >
           <slot></slot>
         </b-card-body>
 
-        <b-card-footer v-if="footer" :footer="footer" :footer-tag="footerTag"></b-card-footer>
-        <b-card-footer v-else-if="$slots.footer" :footer-tag="footerTag">
+        <b-card-footer
+          v-if="footer"
+          :footer="footer"
+          :footer-tag="footerTag"
+          :variant="footerVariant"
+          :footer-class="footerClass"
+        ></b-card-footer>
+        <b-card-footer
+          v-else-if="$slots.footer"
+          :footer-tag="footerTag"
+          :variant="footerVariant"
+          :footer-class="footerClass"
+        >
           <slot name="footer"></slot>
         </b-card-footer>
       </div>
@@ -61,6 +85,7 @@ import BCardFooter from './BCardFooter.vue';
 import BCardHeader from './BCardHeader.vue';
 import BCardImg from './BCardImg.vue';
 import { resolveBooleanish } from '@/composables/useBooleanish';
+import type { ColorVariant } from '@/types/common';
 
 defineOptions({ name: 'BCard' });
 
@@ -68,13 +93,19 @@ const props = withDefaults(
   defineProps<{
     header?: string;
     headerTag?: string;
+    headerVariant?: ColorVariant;
+    headerClass?: string | string[] | Record<string, boolean>;
     bodyTag?: string;
+    bodyClass?: string | string[] | Record<string, boolean>;
     footer?: string;
     footerTag?: string;
+    footerVariant?: ColorVariant;
+    footerClass?: string | string[] | Record<string, boolean>;
     title?: string;
     titleTag?: string;
     subTitle?: string;
     subTitleTag?: string;
+    subTitleTextVariant?: ColorVariant | 'muted';
     imgSrc?: string;
     imgAlt?: string;
     imgTop?: boolean;
