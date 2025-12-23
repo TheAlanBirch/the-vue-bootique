@@ -2,6 +2,7 @@
 
 import { mount } from '@vue/test-utils';
 import { nextTick, ref } from 'vue';
+import { vi } from 'vitest';
 import { vFocus } from '../src/directives/focus';
 import { vPopover } from '../src/directives/popover';
 import { vScrollspy } from '../src/directives/scrollspy';
