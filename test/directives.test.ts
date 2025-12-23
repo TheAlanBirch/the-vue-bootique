@@ -1,146 +1,75 @@
+/// <reference types="vitest/globals" />
+
 import { mount } from '@vue/test-utils';
 import { nextTick, ref } from 'vue';
+import { vi } from 'vitest';
 import { vFocus } from '../src/directives/focus';
 import { vPopover } from '../src/directives/popover';
 import { vScrollspy } from '../src/directives/scrollspy';
 import { vTooltip } from '../src/directives/tooltip';
 import { vToggle } from '../src/directives/toggle';
 
-vi.mock('bootstrap/js/dist/tooltip', () => {
-  const instances = new WeakMap<Element, any>();
+// Import the mocked modules
+import Tooltip from 'bootstrap/js/dist/tooltip';
+import Popover from 'bootstrap/js/dist/popover';
+import ScrollSpy from 'bootstrap/js/dist/scrollspy';
+import Collapse from 'bootstrap/js/dist/collapse';
 
-  class TooltipMock {
-    public disposed = false;
-    static instances = instances;
+// Mock Bootstrap modules
+vi.mock('bootstrap/js/dist/tooltip', () => ({
+  default: vi.fn().mockImplementation((element: Element, options?: Record<string, unknown>) => ({
+    element,
+    options,
+    dispose: vi.fn(),
+  })),
+}));
 
-    static getInstance(element: Element): TooltipMock | null {
-      return TooltipMock.instances.get(element) ?? null;
-    }
+vi.mock('bootstrap/js/dist/popover', () => ({
+  default: vi.fn().mockImplementation((element: Element, options?: Record<string, unknown>) => ({
+    element,
+    options,
+    dispose: vi.fn(),
+  })),
+}));
 
-    constructor(public element: Element, public options?: any) {
-      TooltipMock.instances.set(element, this);
-    }
+vi.mock('bootstrap/js/dist/scrollspy', () => ({
+  default: vi.fn().mockImplementation((element: Element, options?: Record<string, unknown>) => ({
+    element,
+    options,
+    dispose: vi.fn(),
+    refresh: vi.fn(),
+  })),
+}));
 
-    dispose(): void {
-      this.disposed = true;
-      TooltipMock.instances.delete(this.element);
-    }
-  }
+vi.mock('bootstrap/js/dist/collapse', () => ({
+  default: vi.fn().mockImplementation((element: Element, options?: Record<string, unknown>) => ({
+    element,
+    options,
+    dispose: vi.fn(),
+    toggle: vi.fn(),
+    show: vi.fn(),
+    hide: vi.fn(),
+  })),
+}));
 
-  return { default: TooltipMock };
-});
-
-vi.mock('bootstrap/js/dist/popover', () => {
-  const instances = new WeakMap<Element, any>();
-
-  class PopoverMock {
-    public disposed = false;
-    static instances = instances;
-
-    static getInstance(element: Element): PopoverMock | null {
-      return PopoverMock.instances.get(element) ?? null;
-    }
-
-    constructor(public element: Element, public options?: any) {
-      PopoverMock.instances.set(element, this);
-    }
-
-    dispose(): void {
-      this.disposed = true;
-      PopoverMock.instances.delete(this.element);
-    }
-  }
-
-  return { default: PopoverMock };
-});
-
-vi.mock('bootstrap/js/dist/scrollspy', () => {
-  const instances = new WeakMap<Element, any>();
-
-  class ScrollSpyMock {
-    public disposed = false;
-    static instances = instances;
-
-    static getInstance(element: Element): ScrollSpyMock | null {
-      return ScrollSpyMock.instances.get(element) ?? null;
-    }
-
-    constructor(public element: Element, public options?: any) {
-      ScrollSpyMock.instances.set(element, this);
-    }
-
-    dispose(): void {
-      this.disposed = true;
-      ScrollSpyMock.instances.delete(this.element);
-    }
-
-    refresh(): void {}
-  }
-
-  return { default: ScrollSpyMock };
-});
-
-vi.mock('bootstrap/js/dist/collapse', () => {
-  const instances = new WeakMap<Element, any>();
-
-  class CollapseMock {
-    public disposed = false;
-    public toggleCount = 0;
-    public showCount = 0;
-    public hideCount = 0;
-    static instances = instances;
-
-    static getInstance(element: Element): CollapseMock | null {
-      return CollapseMock.instances.get(element) ?? null;
-    }
-
-    constructor(public element: Element, public options?: any) {
-      CollapseMock.instances.set(element, this);
-    }
-
-    toggle(): void {
-      this.toggleCount += 1;
-    }
-
-    show(): void {
-      this.showCount += 1;
-    }
-
-    hide(): void {
-      this.hideCount += 1;
-    }
-
-    dispose(): void {
-      this.disposed = true;
-      CollapseMock.instances.delete(this.element);
-    }
-  }
-
-  return { default: CollapseMock };
-});
-
-const getTooltipInstance = async (el: Element) => {
-  const module = await import('bootstrap/js/dist/tooltip');
-  const TooltipMock = module.default as any;
-  return TooltipMock.getInstance(el);
+const getTooltipInstance = (el: Element) => {
+  return (Tooltip as unknown as ReturnType<typeof vi.fn>).mock.results.find((result) => result.value.element === el)
+    ?.value;
 };
 
-const getPopoverInstance = async (el: Element) => {
-  const module = await import('bootstrap/js/dist/popover');
-  const PopoverMock = module.default as any;
-  return PopoverMock.getInstance(el);
+const getPopoverInstance = (el: Element) => {
+  return (Popover as unknown as ReturnType<typeof vi.fn>).mock.results.find((result) => result.value.element === el)
+    ?.value;
 };
 
-const getScrollspyInstance = async (el: Element) => {
-  const module = await import('bootstrap/js/dist/scrollspy');
-  const ScrollSpyMock = module.default as any;
-  return ScrollSpyMock.getInstance(el);
+const getScrollspyInstance = (el: Element) => {
+  return (ScrollSpy as unknown as ReturnType<typeof vi.fn>).mock.results.find((result) => result.value.element === el)
+    ?.value;
 };
 
-const getCollapseInstance = async (el: Element) => {
-  const module = await import('bootstrap/js/dist/collapse');
-  const CollapseMock = module.default as any;
-  return CollapseMock.getInstance(el);
+const getCollapseInstance = (el: Element) => {
+  return (Collapse as unknown as ReturnType<typeof vi.fn>).mock.results.find((result) => result.value.element === el)
+    ?.value;
 };
 
 describe('v-tooltip', () => {
@@ -176,7 +105,7 @@ describe('v-tooltip', () => {
 
   it('disposes the tooltip on unmount', async () => {
     const wrapper = mount({
-      template: "<button v-tooltip=\"'Bye'\">Action</button>",
+      template: '<button v-tooltip="\'Bye\'">Action</button>',
       directives: { tooltip: vTooltip },
     });
 
@@ -241,10 +170,13 @@ describe('v-toggle', () => {
     target.id = 'collapseTarget';
     document.body.appendChild(target);
 
-    const wrapper = mount({
-      template: '<button v-toggle="\'#collapseTarget\'">Toggle</button>',
-      directives: { toggle: vToggle },
-    }, { attachTo: document.body });
+    const wrapper = mount(
+      {
+        template: '<button v-toggle="\'#collapseTarget\'">Toggle</button>',
+        directives: { toggle: vToggle },
+      },
+      { attachTo: document.body },
+    );
 
     const button = wrapper.get('button');
     await button.trigger('click');
@@ -278,7 +210,7 @@ describe('v-focus', () => {
 
     const wrapper = mount(
       {
-        template: '<input v-focus=\"{ delay: 50 }\" />',
+        template: '<input v-focus="{ delay: 50 }" />',
         directives: { focus: vFocus },
       },
       { attachTo: document.body },

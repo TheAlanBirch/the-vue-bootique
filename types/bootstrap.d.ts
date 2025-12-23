@@ -22,7 +22,7 @@ declare module 'bootstrap/js/dist/tooltip' {
     html?: boolean;
     container?: string | false | Element;
     boundary?: 'clippingParents' | 'viewport' | 'window' | Element;
-    customClass?: string | ((...args: any[]) => string);
+    customClass?: string | ((...args: unknown[]) => string);
     offset?: [number, number] | string;
   }
 
