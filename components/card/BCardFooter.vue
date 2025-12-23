@@ -1,6 +1,5 @@
 <template>
-  <!-- TODO: Add variant and class props -->
-  <component :is="footerTag" class="card-footer">
+  <component :is="footerTag" :class="footerClasses">
     <slot></slot>
     <template v-if="showFooterProp">
       {{ footer }}
@@ -10,20 +9,32 @@
 
 <script lang="ts" setup>
 import { computed, useSlots } from 'vue';
+import type { ColorVariant } from '@/types/common';
 
-const props = defineProps({
-  footer: String,
-  footerTag: {
-    type: String,
-    default: 'div',
+const props = withDefaults(
+  defineProps<{
+    footer?: string;
+    footerTag?: string;
+    variant?: ColorVariant;
+    footerClass?: string | string[] | Record<string, boolean>;
+  }>(),
+  {
+    footerTag: 'div',
+    footerClass: undefined,
   },
-});
+);
 
 const slots = useSlots();
 
 const showFooterProp = computed(() => {
   return !slots.default?.().length && !!props.footer;
 });
+
+const footerClasses = computed(() => [
+  'card-footer',
+  props.variant ? `bg-${props.variant}` : null,
+  props.footerClass,
+]);
 </script>
 
 <style></style>

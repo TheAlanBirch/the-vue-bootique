@@ -1,6 +1,5 @@
 <template>
-  <!-- TODO: Add remaining props -->
-  <div class="card-body">
+  <component :is="bodyTag" :class="bodyClasses">
     <b-card-title
       v-if="title"
       :title="title"
@@ -10,31 +9,36 @@
       v-if="subTitle"
       :sub-title="subTitle"
       :sub-title-tag="subTitleTag"
+      :sub-title-text-variant="subTitleTextVariant"
     ></b-card-sub-title>
     <slot></slot>
-  </div>
+  </component>
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
+import type { ColorVariant } from '@/types/common';
 import BCardSubTitle from './BCardSubTitle.vue';
 import BCardTitle from './BCardTitle.vue';
 
-defineProps({
-  bodyTag: {
-    type: String,
-    default: 'div',
+const props = withDefaults(
+  defineProps<{
+    bodyTag?: string;
+    bodyClass?: string | string[] | Record<string, boolean>;
+    subTitle?: string;
+    subTitleTag?: string;
+    subTitleTextVariant?: ColorVariant | 'muted';
+    title?: string;
+    titleTag?: string;
+  }>(),
+  {
+    bodyTag: 'div',
+    subTitleTag: 'h6',
+    titleTag: 'h4',
   },
-  subTitle: String,
-  subTitleTag: {
-    type: String,
-    default: 'h6',
-  },
-  title: String,
-  titleTag: {
-    type: String,
-    default: 'h4',
-  },
-});
+);
+
+const bodyClasses = computed(() => ['card-body', props.bodyClass]);
 </script>
 
 <style></style>
