@@ -10,6 +10,7 @@ import BFormSelect from './components/form/BFormSelect.vue';
 import BFormTextarea from './components/form/BFormTextarea.vue';
 import BModal from './components/overlay/BModal.vue';
 import BNavbar from './components/navigation/BNavbar.vue';
+import { registerDirectives } from './src/directives';
 
 const components = [
   BAlert,
@@ -31,6 +32,8 @@ export const install = (app: App): void => {
       app.component(component.name, component);
     }
   });
+
+  registerDirectives(app);
 };
 
 export default {
@@ -52,3 +55,4 @@ export {
 };
 
 export * from './types/common';
+export * from './src/directives';

@@ -14,6 +14,9 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Docs</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/directives">Directives</a>
+        </li>
       </ul>
     </b-navbar>
 
