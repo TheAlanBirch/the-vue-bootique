@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '~/components/form',
     '~/components/navigation',
     '~/components/overlay',
+    '~/components/layout',
   ],
   modules: ['@nuxt/content', '@pinia/nuxt', '@nuxtjs/color-mode', '@nuxt/test-utils/module', '@nuxtjs/eslint-module'],
   eslint: {

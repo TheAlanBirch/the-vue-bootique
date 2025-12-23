@@ -1,5 +1,5 @@
 <template>
-  <div class="container py-4">
+  <b-container class="py-4">
     <b-navbar background="dark" variant="dark" class="mb-4">
       <template #brand>
         <span class="d-flex align-items-center gap-2">
@@ -9,10 +9,10 @@
       </template>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" href="#">Home</a>
+          <NuxtLink class="nav-link active" to="/">Home</NuxtLink>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Docs</a>
+          <NuxtLink class="nav-link" to="/layout">Layout</NuxtLink>
         </li>
       </ul>
     </b-navbar>
@@ -61,7 +61,7 @@
         <b-button type="submit" variant="primary" :disabled="!form.accepted">Submit</b-button>
       </div>
     </form>
-  </div>
+  </b-container>
 </template>
 
 <script lang="ts" setup>

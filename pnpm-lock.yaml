@@ -23,6 +23,9 @@ importers:
       '@popperjs/core':
         specifier: ^2.11.8
         version: 2.11.8
+      ajv:
+        specifier: ^8.17.1
+        version: 8.17.1
       better-sqlite3:
         specifier: ^12.5.0
         version: 12.5.0
