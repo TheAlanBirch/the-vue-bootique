@@ -3,7 +3,7 @@
     <b-navbar background="dark" variant="dark" class="mb-4">
       <template #brand>
         <span class="d-flex align-items-center gap-2">
-          <b-icon-bootstrap-fill />
+          <b-icon-flower2 />
           <span>Vue Bootique</span>
         </span>
       </template>
@@ -18,9 +18,7 @@
     </b-navbar>
 
     <div class="d-flex align-items-center gap-2 mb-3">
-      <b-button variant="primary" @click="showAlert = true">
-        <b-icon-bell-fill class="me-2" /> Show Alert
-      </b-button>
+      <b-button variant="primary" @click="showAlert = true"> <b-icon-bell-fill class="me-2" /> Show Alert </b-button>
       <b-button variant="secondary" @click="isModalOpen = true">
         <b-icon-columns-gap class="me-2" /> Open Modal
       </b-button>
@@ -69,7 +67,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-const showAlert = ref(true);
+const showAlert = ref(false);
 const isModalOpen = ref(false);
 const form = ref({
   name: '',

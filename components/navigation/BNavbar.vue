@@ -1,9 +1,9 @@
 <template>
   <nav :class="navbarClasses" role="navigation">
     <div class="container-fluid">
-      <slot name="brand">
-        <a v-if="brand" class="navbar-brand" href="#">{{ brand }}</a>
-      </slot>
+      <a v-if="$slots.brand || brand" class="navbar-brand" href="#">
+        <slot name="brand">{{ brand }}</slot>
+      </a>
       <button
         class="navbar-toggler"
         type="button"
