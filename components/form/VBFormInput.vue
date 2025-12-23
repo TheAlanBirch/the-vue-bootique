@@ -33,7 +33,7 @@ import { useUniqueId } from '@/composables/useUniqueId';
 import { ariaInvalid, validationClass } from '@/composables/useValidation';
 import type { Booleanish, FormState } from '@/types/common';
 
-defineOptions({ name: 'BFormInput' });
+defineOptions({ name: 'VBFormInput' });
 
 const props = withDefaults(
   defineProps<{

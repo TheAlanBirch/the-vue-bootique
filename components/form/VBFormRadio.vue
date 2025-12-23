@@ -1,19 +1,20 @@
 <template>
-  <div class="mb-3">
-    <label v-if="label" class="form-label" :for="uid">{{ label }}</label>
-    <textarea
+  <div class="form-check mb-3">
+    <input
       :id="uid"
-      class="form-control"
-      :class="stateClass"
-      :rows="rows"
-      :placeholder="placeholder"
-      :value="modelValue"
+      class="form-check-input"
+      type="radio"
+      :name="name"
+      :checked="modelValue === value"
+      :value="value"
       :disabled="isDisabled"
-      :readonly="isReadonly"
       :required="isRequired"
       :aria-invalid="ariaInvalid(state) || undefined"
-      @input="onInput"
-    ></textarea>
+      @change="onChange"
+    />
+    <label v-if="label" class="form-check-label" :for="uid">
+      {{ label }}
+    </label>
     <div v-if="state === 'invalid' && invalidFeedback" class="invalid-feedback d-block">
       {{ invalidFeedback }}
     </div>
@@ -27,51 +28,45 @@
 import { computed } from 'vue';
 import { resolveBooleanish } from '@/composables/useBooleanish';
 import { useUniqueId } from '@/composables/useUniqueId';
-import { ariaInvalid, validationClass } from '@/composables/useValidation';
+import { ariaInvalid } from '@/composables/useValidation';
 import type { Booleanish, FormState } from '@/types/common';
 
-defineOptions({ name: 'BFormTextarea' });
+defineOptions({ name: 'VBFormRadio' });
 
 const props = withDefaults(
   defineProps<{
-    modelValue: string;
-    rows?: number | string;
+    modelValue: string | number | boolean;
+    value: string | number | boolean;
     label?: string;
-    placeholder?: string;
+    name?: string;
     state?: FormState;
     invalidFeedback?: string;
     validFeedback?: string;
     disabled?: Booleanish;
-    readonly?: Booleanish;
     required?: Booleanish;
     id?: string;
   }>(),
   {
-    rows: 3,
     label: '',
-    placeholder: '',
+    name: '',
     state: null,
     invalidFeedback: '',
     validFeedback: '',
     disabled: false,
-    readonly: false,
     required: false,
     id: '',
   },
 );
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void;
+  (e: 'update:modelValue', value: string | number | boolean): void;
 }>();
 
-const uid = computed(() => props.id || useUniqueId('textarea'));
-const stateClass = computed(() => validationClass(props.state));
+const uid = computed(() => props.id || useUniqueId('radio'));
 const isDisabled = computed(() => resolveBooleanish(props.disabled));
-const isReadonly = computed(() => resolveBooleanish(props.readonly));
 const isRequired = computed(() => resolveBooleanish(props.required));
 
-const onInput = (event: Event) => {
-  const target = event.target as HTMLTextAreaElement;
-  emit('update:modelValue', target.value);
+const onChange = () => {
+  emit('update:modelValue', props.value);
 };
 </script>

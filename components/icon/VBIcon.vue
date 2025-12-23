@@ -15,6 +15,8 @@
 import type { CSSProperties } from 'vue';
 import { computed, getCurrentInstance } from 'vue';
 
+defineOptions({ name: 'VBIcon' });
+
 const parseNumber = (value?: string | number) => {
   const numeric = Number(value);
   return Number.isNaN(numeric) ? null : numeric;
@@ -49,7 +51,7 @@ const instance = getCurrentInstance();
 
 const iconName = computed(() => {
   if (props.icon) return props.icon;
-  const rawName = instance?.type?.name?.replace(/^BIcon/, '') ?? '';
+  const rawName = instance?.type?.name?.replace(/^VBIcon/, '') ?? '';
   if (!rawName) return '';
   return rawName
     .replace(/([a-z0-9])([A-Z])/g, '$1-$2')

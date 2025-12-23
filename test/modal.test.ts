@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils';
-import BModal from '../components/overlay/BModal.vue';
+import VBModal from '../components/overlay/VBModal.vue';
 
-describe('BModal', () => {
+describe('VBModal', () => {
   it('renders when open and emits close on button click', async () => {
-    const wrapper = mount(BModal, {
+    const wrapper = mount(VBModal, {
       props: { modelValue: true, title: 'Hello' },
       slots: { default: 'Content' },
     });
@@ -14,7 +14,7 @@ describe('BModal', () => {
   });
 
   it('closes when clicking backdrop', async () => {
-    const wrapper = mount(BModal, {
+    const wrapper = mount(VBModal, {
       props: { modelValue: true },
       slots: { default: 'Content' },
     });

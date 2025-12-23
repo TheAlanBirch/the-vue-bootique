@@ -5,6 +5,8 @@
 </template>
 
 <script lang="ts" setup>
+defineOptions({ name: 'VBCardText' });
+
 defineProps({
   textTag: {
     type: String,

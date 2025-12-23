@@ -7,11 +7,13 @@ TheVueBootique is a Vue 3 + TypeScript component library that wraps Bootstrap 5 
 // main.ts
 import { createApp } from 'vue';
 import App from './App.vue';
-import Bootique, { BButton } from 'the-vue-bootique';
+import Bootique, { VBButton } from 'the-vue-bootique';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const app = createApp(App);
-app.use(Bootique); // registers all components
-app.component('BButton', BButton); // or register individually
+app.use(Bootique); // registers B* and b-* aliases
+app.component('BButton', VBButton); // or register individually with the public alias
 app.mount('#app');
 ```
+
+Use components in templates via their public aliases, e.g. `<b-button>` or `<BButton>`.

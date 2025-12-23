@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils';
-import BCard from '../components/card/BCard.vue';
+import VBCard from '../components/card/VBCard.vue';
 
-describe('BCard', () => {
+describe('VBCard', () => {
   it('renders header, body, and footer content', () => {
-    const wrapper = mount(BCard, {
+    const wrapper = mount(VBCard, {
       props: {
         header: 'Card Header',
         title: 'Card Title',

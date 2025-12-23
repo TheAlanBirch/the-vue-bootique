@@ -36,7 +36,7 @@ import { computed, onMounted, onUnmounted, watch } from 'vue';
 import type { Size } from '@/types/common';
 import { useUniqueId } from '@/composables/useUniqueId';
 
-defineOptions({ name: 'BModal' });
+defineOptions({ name: 'VBModal' });
 
 const props = withDefaults(
   defineProps<{

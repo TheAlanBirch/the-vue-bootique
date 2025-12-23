@@ -1,11 +1,11 @@
 import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
-import BIcon from '~/components/icon/BIcon.vue';
-import BIconStack from '~/components/icon/BIconStack.vue';
+import VBIcon from '~/components/icon/VBIcon.vue';
+import VBIconStack from '~/components/icon/VBIconStack.vue';
 
-describe('BIcon', () => {
+describe('VBIcon', () => {
   it('renders icon with variant and animation classes', async () => {
-    const wrapper = mount(BIcon, {
+    const wrapper = mount(VBIcon, {
       props: { icon: 'arrow-up', variant: 'primary', animation: 'spin' },
     });
 
@@ -16,7 +16,7 @@ describe('BIcon', () => {
   });
 
   it('applies font scaling to the rendered icon', async () => {
-    const wrapper = mount(BIcon, { props: { icon: 'alarm', fontScale: 1.25 } });
+    const wrapper = mount(VBIcon, { props: { icon: 'alarm', fontScale: 1.25 } });
 
     expect(wrapper.attributes('style')).toContain('font-size: 1.25em;');
   });
@@ -29,11 +29,11 @@ describe('BIcon', () => {
     const wrapper = mount(TestComponent, {
       global: {
         components: {
-          BIcon,
+          VBIcon,
           BIconArrowUp: defineComponent({
-            name: 'BIconArrowUp',
+            name: 'VBIconArrowUp',
             setup(_, { slots, attrs }) {
-              return () => h(BIcon, { ...attrs, icon: 'arrow-up' }, slots);
+              return () => h(VBIcon, { ...attrs, icon: 'arrow-up' }, slots);
             },
           }),
         },
@@ -45,14 +45,14 @@ describe('BIcon', () => {
   });
 });
 
-describe('BIconStack', () => {
+describe('VBIconStack', () => {
   it('stacks icons and forwards animation classes', async () => {
-    const wrapper = mount(BIconStack, {
+    const wrapper = mount(VBIconStack, {
       props: { animation: 'pulse' },
       slots: {
         default: () => [
-          h(BIcon, { icon: 'circle-fill', variant: 'primary', stacked: true }),
-          h(BIcon, { icon: 'arrow-up', stacked: true, stackedOrder: 2, animation: 'spin' }),
+          h(VBIcon, { icon: 'circle-fill', variant: 'primary', stacked: true }),
+          h(VBIcon, { icon: 'arrow-up', stacked: true, stackedOrder: 2, animation: 'spin' }),
         ],
       },
     });

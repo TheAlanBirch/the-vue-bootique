@@ -1,6 +1,6 @@
 <template>
   <article class="card">
-    <b-card-img
+    <VBCardImg
       v-if="imgSrc && imagePosition === 'top'"
       :src="imgSrc"
       :alt="imgAlt"
@@ -10,23 +10,23 @@
     />
     <div :class="cardClasses">
       <div v-if="isHorizontalCard" class="col-md-4">
-        <b-card-img
+        <VBCardImg
           v-if="imgSrc"
           :position="imagePosition"
           :src="imgSrc"
           :alt="imgAlt"
           :height="imgHeight"
           :width="imgWidth"
-        ></b-card-img>
+        ></VBCardImg>
       </div>
       <div class="col">
-        <b-card-header v-if="header" :header="header" :header-tag="headerTag" />
-        <b-card-header v-else-if="$slots.header" :header-tag="headerTag">
+        <VBCardHeader v-if="header" :header="header" :header-tag="headerTag" />
+        <VBCardHeader v-else-if="$slots.header" :header-tag="headerTag">
           <slot name="header"></slot>
-        </b-card-header>
+        </VBCardHeader>
 
         <slot v-if="noBody"></slot>
-        <b-card-body
+        <VBCardBody
           v-else
           :body-tag="bodyTag"
           :sub-title="subTitle"
@@ -35,15 +35,15 @@
           :title-tag="titleTag"
         >
           <slot></slot>
-        </b-card-body>
+        </VBCardBody>
 
-        <b-card-footer v-if="footer" :footer="footer" :footer-tag="footerTag"></b-card-footer>
-        <b-card-footer v-else-if="$slots.footer" :footer-tag="footerTag">
+        <VBCardFooter v-if="footer" :footer="footer" :footer-tag="footerTag"></VBCardFooter>
+        <VBCardFooter v-else-if="$slots.footer" :footer-tag="footerTag">
           <slot name="footer"></slot>
-        </b-card-footer>
+        </VBCardFooter>
       </div>
     </div>
-    <b-card-img
+    <VBCardImg
       v-if="imgSrc && imagePosition === 'bottom'"
       :src="imgSrc"
       :alt="imgAlt"
@@ -56,13 +56,13 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import BCardBody from './BCardBody.vue';
-import BCardFooter from './BCardFooter.vue';
-import BCardHeader from './BCardHeader.vue';
-import BCardImg from './BCardImg.vue';
+import VBCardBody from './VBCardBody.vue';
+import VBCardFooter from './VBCardFooter.vue';
+import VBCardHeader from './VBCardHeader.vue';
+import VBCardImg from './VBCardImg.vue';
 import { resolveBooleanish } from '@/composables/useBooleanish';
 
-defineOptions({ name: 'BCard' });
+defineOptions({ name: 'VBCard' });
 
 const props = withDefaults(
   defineProps<{

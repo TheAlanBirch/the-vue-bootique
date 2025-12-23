@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils';
-import BNavbar from '../components/navigation/BNavbar.vue';
+import VBNavbar from '../components/navigation/VBNavbar.vue';
 
-describe('BNavbar', () => {
+describe('VBNavbar', () => {
   it('toggles collapse visibility', async () => {
-    const wrapper = mount(BNavbar, {
+    const wrapper = mount(VBNavbar, {
       props: { brand: 'Brand' },
       slots: {
         default: '<ul class="navbar-nav"><li class="nav-item">Home</li></ul>',

@@ -10,6 +10,8 @@
 <script lang="ts" setup>
 import { computed, useSlots } from 'vue';
 
+defineOptions({ name: 'VBCardTitle' });
+
 const props = defineProps({
   title: String,
   titleTag: {

@@ -24,7 +24,7 @@ import { computed } from 'vue';
 import { resolveBooleanish } from '@/composables/useBooleanish';
 import type { Booleanish, ColorVariant } from '@/types/common';
 
-defineOptions({ name: 'BAlert' });
+defineOptions({ name: 'VBAlert' });
 
 const props = withDefaults(
   defineProps<{

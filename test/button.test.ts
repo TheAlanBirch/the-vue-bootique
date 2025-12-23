@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils';
-import BButton from '../components/base/BButton.vue';
+import VBButton from '../components/base/VBButton.vue';
 
-describe('BButton', () => {
+describe('VBButton', () => {
   it('applies variant and size classes', () => {
-    const wrapper = mount(BButton, {
+    const wrapper = mount(VBButton, {
       props: { variant: 'secondary', size: 'lg' },
       slots: { default: 'Action' },
     });
@@ -15,7 +15,7 @@ describe('BButton', () => {
   });
 
   it('emits click when enabled', async () => {
-    const wrapper = mount(BButton, {
+    const wrapper = mount(VBButton, {
       slots: { default: 'Action' },
     });
 
@@ -24,7 +24,7 @@ describe('BButton', () => {
   });
 
   it('prevents click when disabled', async () => {
-    const wrapper = mount(BButton, {
+    const wrapper = mount(VBButton, {
       props: { disabled: true },
       slots: { default: 'Disabled' },
     });

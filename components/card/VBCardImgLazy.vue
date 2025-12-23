@@ -3,6 +3,8 @@
   <div></div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+defineOptions({ name: 'VBCardImgLazy' });
+</script>
 
 <style></style>

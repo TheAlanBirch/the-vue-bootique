@@ -1,23 +1,25 @@
 <template>
   <!-- TODO: Add remaining props -->
   <div class="card-body">
-    <b-card-title
+    <VBCardTitle
       v-if="title"
       :title="title"
       :title-tag="titleTag"
-    ></b-card-title>
-    <b-card-sub-title
+    ></VBCardTitle>
+    <VBCardSubTitle
       v-if="subTitle"
       :sub-title="subTitle"
       :sub-title-tag="subTitleTag"
-    ></b-card-sub-title>
+    ></VBCardSubTitle>
     <slot></slot>
   </div>
 </template>
 
 <script lang="ts" setup>
-import BCardSubTitle from './BCardSubTitle.vue';
-import BCardTitle from './BCardTitle.vue';
+import VBCardSubTitle from './VBCardSubTitle.vue';
+import VBCardTitle from './VBCardTitle.vue';
+
+defineOptions({ name: 'VBCardBody' });
 
 defineProps({
   bodyTag: {
