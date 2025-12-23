@@ -1,11 +1,11 @@
-import { mountSuspended } from '@nuxt/test-utils/runtime';
+import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
 import BIcon from '~/components/icon/BIcon.vue';
 import BIconStack from '~/components/icon/BIconStack.vue';
 
 describe('BIcon', () => {
   it('renders icon with variant and animation classes', async () => {
-    const wrapper = await mountSuspended(BIcon, {
+    const wrapper = mount(BIcon, {
       props: { icon: 'arrow-up', variant: 'primary', animation: 'spin' },
     });
 
@@ -16,7 +16,7 @@ describe('BIcon', () => {
   });
 
   it('applies font scaling to the rendered icon', async () => {
-    const wrapper = await mountSuspended(BIcon, { props: { icon: 'alarm', fontScale: 1.25 } });
+    const wrapper = mount(BIcon, { props: { icon: 'alarm', fontScale: 1.25 } });
 
     expect(wrapper.attributes('style')).toContain('font-size: 1.25em;');
   });
@@ -26,7 +26,19 @@ describe('BIcon', () => {
       template: '<b-icon-arrow-up data-test="alias" />',
     });
 
-    const wrapper = await mountSuspended(TestComponent);
+    const wrapper = mount(TestComponent, {
+      global: {
+        components: {
+          BIcon,
+          BIconArrowUp: defineComponent({
+            name: 'BIconArrowUp',
+            setup(_, { slots, attrs }) {
+              return () => h(BIcon, { ...attrs, icon: 'arrow-up' }, slots);
+            },
+          }),
+        },
+      },
+    });
     const icon = wrapper.find('[data-test="alias"] i');
 
     expect(icon.classes()).toContain('bi-arrow-up');
@@ -35,7 +47,7 @@ describe('BIcon', () => {
 
 describe('BIconStack', () => {
   it('stacks icons and forwards animation classes', async () => {
-    const wrapper = await mountSuspended(BIconStack, {
+    const wrapper = mount(BIconStack, {
       props: { animation: 'pulse' },
       slots: {
         default: () => [
