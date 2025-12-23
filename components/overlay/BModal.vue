@@ -13,7 +13,7 @@
         <div class="modal-content">
           <header class="modal-header">
             <slot name="header">
-              <h5 class="modal-title" :id="labelId">{{ title }}</h5>
+              <h5 :id="labelId" class="modal-title">{{ title }}</h5>
             </slot>
             <button type="button" class="btn-close" aria-label="Close" @click="close" />
           </header>

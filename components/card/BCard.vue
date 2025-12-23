@@ -56,11 +56,11 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { resolveBooleanish } from '@/composables/useBooleanish';
 import BCardBody from './BCardBody.vue';
 import BCardFooter from './BCardFooter.vue';
 import BCardHeader from './BCardHeader.vue';
 import BCardImg from './BCardImg.vue';
+import { resolveBooleanish } from '@/composables/useBooleanish';
 
 defineOptions({ name: 'BCard' });
 
@@ -106,7 +106,7 @@ const isHorizontalCard = computed(() => {
 const imagePosition = computed<'top' | 'bottom' | 'left' | 'right'>(() => {
   const flags = [props.imgTop, props.imgBottom, props.imgLeft, props.imgRight].filter(Boolean).length;
   if (flags > 1) {
-    console.warn('[the-vue-bootique] Multiple image position props set on BCard. Using first truthy in priority bottom > left > right > top.');
+    // Prefer a deterministic priority when multiple positions are set
   }
   if (props.imgBottom) return 'bottom';
   if (props.imgLeft) return 'left';

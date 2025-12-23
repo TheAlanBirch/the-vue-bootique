@@ -29,8 +29,6 @@ export const install = (app: App): void => {
   components.forEach((component) => {
     if (component.name) {
       app.component(component.name, component);
-    } else {
-      console.warn('[the-vue-bootique] attempted to register a component without a name:', component);
     }
   });
 };
