@@ -1,6 +1,7 @@
 import { defineComponent, h } from 'vue';
 import { defineNuxtPlugin } from '#app';
 import BIcon from '~/components/icon/BIcon.vue';
+import BIconStack from '~/components/icon/BIconStack.vue';
 import { toPascalCase } from '~/utils/icon';
 
 const iconModules = import.meta.glob('../node_modules/bootstrap-icons/icons/*.svg');
@@ -11,6 +12,12 @@ const iconNames = Object.keys(iconModules)
 
 export default defineNuxtPlugin((nuxtApp) => {
   const app = nuxtApp.vueApp;
+
+  if (app.config.globalProperties.__bIconPluginLoaded) return;
+  app.config.globalProperties.__bIconPluginLoaded = true;
+
+  if (!app.component('BIcon')) app.component('BIcon', BIcon);
+  if (!app.component('BIconStack')) app.component('BIconStack', BIconStack);
 
   iconNames.forEach((icon) => {
     const componentName = `BIcon${toPascalCase(icon)}`;

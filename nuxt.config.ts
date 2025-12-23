@@ -4,7 +4,10 @@ import { defineNuxtConfig } from 'nuxt/config';
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/main.css'],
-  components: ['~/components', '~/components/card'],
+  components: [
+    { path: '~/components', pathPrefix: false, ignore: ['**/icon/**/*'] },
+    '~/components/card',
+  ],
   modules: [
     '@nuxt/content',
     '@pinia/nuxt',
