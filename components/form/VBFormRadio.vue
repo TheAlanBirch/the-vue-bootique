@@ -31,7 +31,7 @@ import { useUniqueId } from '@/composables/useUniqueId';
 import { ariaInvalid } from '@/composables/useValidation';
 import type { Booleanish, FormState } from '@/types/common';
 
-defineOptions({ name: 'BFormRadio' });
+defineOptions({ name: 'VBFormRadio' });
 
 const props = withDefaults(
   defineProps<{

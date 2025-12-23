@@ -5,6 +5,8 @@
 </template>
 
 <script lang="ts" setup>
+defineOptions({ name: 'VBCardLink' });
+
 defineProps({
   href: String,
 });

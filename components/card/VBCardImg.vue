@@ -5,10 +5,12 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
+defineOptions({ name: 'VBCardImg' });
+
 const props = defineProps({
   src: String,
   alt: String,
-  position: String, // left, right, bottom
+  position: String, // top, bottom, left, right
   width: [Number, String],
   height: [Number, String],
 });

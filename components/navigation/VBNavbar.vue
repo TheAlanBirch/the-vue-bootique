@@ -24,7 +24,7 @@
 import { computed, ref } from 'vue';
 import type { ColorVariant } from '@/types/common';
 
-defineOptions({ name: 'BNavbar' });
+defineOptions({ name: 'VBNavbar' });
 
 const props = withDefaults(
   defineProps<{

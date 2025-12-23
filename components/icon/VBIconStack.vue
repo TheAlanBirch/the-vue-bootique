@@ -8,6 +8,8 @@
 import type { CSSProperties } from 'vue';
 import { computed } from 'vue';
 
+defineOptions({ name: 'VBIconStack' });
+
 const props = withDefaults(
   defineProps<{
     size?: string | number;

@@ -1,13 +1,13 @@
 import { mount } from '@vue/test-utils';
-import BFormCheckbox from '../components/form/BFormCheckbox.vue';
-import BFormInput from '../components/form/BFormInput.vue';
-import BFormRadio from '../components/form/BFormRadio.vue';
-import BFormSelect from '../components/form/BFormSelect.vue';
-import BFormTextarea from '../components/form/BFormTextarea.vue';
+import VBFormCheckbox from '../components/form/VBFormCheckbox.vue';
+import VBFormInput from '../components/form/VBFormInput.vue';
+import VBFormRadio from '../components/form/VBFormRadio.vue';
+import VBFormSelect from '../components/form/VBFormSelect.vue';
+import VBFormTextarea from '../components/form/VBFormTextarea.vue';
 
 describe('Form components', () => {
   it('updates model on input', async () => {
-    const wrapper = mount(BFormInput, {
+    const wrapper = mount(VBFormInput, {
       props: { modelValue: '', label: 'Name' },
     });
 
@@ -16,7 +16,7 @@ describe('Form components', () => {
   });
 
   it('applies validation class', () => {
-    const wrapper = mount(BFormInput, {
+    const wrapper = mount(VBFormInput, {
       props: { modelValue: '', state: 'invalid' },
     });
 
@@ -24,7 +24,7 @@ describe('Form components', () => {
   });
 
   it('select emits update on change', async () => {
-    const wrapper = mount(BFormSelect, {
+    const wrapper = mount(VBFormSelect, {
       props: {
         modelValue: '',
         options: [
@@ -39,7 +39,7 @@ describe('Form components', () => {
   });
 
   it('checkbox toggles value', async () => {
-    const wrapper = mount(BFormCheckbox, {
+    const wrapper = mount(VBFormCheckbox, {
       props: { modelValue: false, label: 'Accept' },
     });
 
@@ -48,7 +48,7 @@ describe('Form components', () => {
   });
 
   it('radio sets selected value', async () => {
-    const wrapper = mount(BFormRadio, {
+    const wrapper = mount(VBFormRadio, {
       props: { modelValue: 'a', value: 'b', label: 'Option B', name: 'group' },
     });
 
@@ -57,7 +57,7 @@ describe('Form components', () => {
   });
 
   it('textarea emits input', async () => {
-    const wrapper = mount(BFormTextarea, {
+    const wrapper = mount(VBFormTextarea, {
       props: { modelValue: '', label: 'Description' },
     });
 

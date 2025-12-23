@@ -1,19 +1,22 @@
 <template>
   <div class="mb-3">
     <label v-if="label" class="form-label" :for="uid">{{ label }}</label>
-    <textarea
+    <input
       :id="uid"
+      :type="type"
       class="form-control"
       :class="stateClass"
-      :rows="rows"
       :placeholder="placeholder"
       :value="modelValue"
       :disabled="isDisabled"
       :readonly="isReadonly"
       :required="isRequired"
       :aria-invalid="ariaInvalid(state) || undefined"
+      :aria-describedby="description ? `${uid}-desc` : undefined"
       @input="onInput"
-    ></textarea>
+      @blur="onBlur"
+    />
+    <small v-if="description" :id="`${uid}-desc`" class="form-text text-muted">{{ description }}</small>
     <div v-if="state === 'invalid' && invalidFeedback" class="invalid-feedback d-block">
       {{ invalidFeedback }}
     </div>
@@ -30,14 +33,15 @@ import { useUniqueId } from '@/composables/useUniqueId';
 import { ariaInvalid, validationClass } from '@/composables/useValidation';
 import type { Booleanish, FormState } from '@/types/common';
 
-defineOptions({ name: 'BFormTextarea' });
+defineOptions({ name: 'VBFormInput' });
 
 const props = withDefaults(
   defineProps<{
-    modelValue: string;
-    rows?: number | string;
+    modelValue: string | number;
+    type?: string;
     label?: string;
     placeholder?: string;
+    description?: string;
     state?: FormState;
     invalidFeedback?: string;
     validFeedback?: string;
@@ -47,9 +51,10 @@ const props = withDefaults(
     id?: string;
   }>(),
   {
-    rows: 3,
+    type: 'text',
     label: '',
     placeholder: '',
+    description: '',
     state: null,
     invalidFeedback: '',
     validFeedback: '',
@@ -61,17 +66,25 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void;
+  (e: 'update:modelValue', value: string | number): void;
+  (e: 'blur', event: FocusEvent): void;
 }>();
 
-const uid = computed(() => props.id || useUniqueId('textarea'));
+const uid = computed(() => props.id || useUniqueId('input'));
 const stateClass = computed(() => validationClass(props.state));
 const isDisabled = computed(() => resolveBooleanish(props.disabled));
 const isReadonly = computed(() => resolveBooleanish(props.readonly));
 const isRequired = computed(() => resolveBooleanish(props.required));
 
 const onInput = (event: Event) => {
-  const target = event.target as HTMLTextAreaElement;
-  emit('update:modelValue', target.value);
+  const target = event.target as HTMLInputElement;
+  if (props.type === 'number') {
+    const numeric = Number(target.value);
+    emit('update:modelValue', Number.isNaN(numeric) ? target.value : numeric);
+  } else {
+    emit('update:modelValue', target.value);
+  }
 };
+
+const onBlur = (event: FocusEvent) => emit('blur', event);
 </script>

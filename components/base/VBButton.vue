@@ -14,7 +14,7 @@ import { computed } from 'vue';
 import { resolveBooleanish } from '@/composables/useBooleanish';
 import type { Booleanish, ColorVariant, Size } from '@/types/common';
 
-defineOptions({ name: 'BButton' });
+defineOptions({ name: 'VBButton' });
 
 const props = withDefaults(
   defineProps<{

@@ -1,21 +1,19 @@
 <template>
-  <div class="mb-3">
-    <label v-if="label" class="form-label" :for="uid">{{ label }}</label>
-    <select
+  <div class="form-check mb-3">
+    <input
       :id="uid"
-      class="form-select"
-      :class="stateClass"
-      :value="modelValue"
+      class="form-check-input"
+      type="checkbox"
+      :checked="modelValue"
       :disabled="isDisabled"
       :required="isRequired"
+      :name="name"
       :aria-invalid="ariaInvalid(state) || undefined"
       @change="onChange"
-    >
-      <option v-if="placeholder" disabled value="">{{ placeholder }}</option>
-      <option v-for="option in options" :key="String(option.value)" :value="option.value" :disabled="option.disabled">
-        {{ option.label }}
-      </option>
-    </select>
+    />
+    <label v-if="label" class="form-check-label" :for="uid">
+      {{ label }}
+    </label>
     <div v-if="state === 'invalid' && invalidFeedback" class="invalid-feedback d-block">
       {{ invalidFeedback }}
     </div>
@@ -29,17 +27,16 @@
 import { computed } from 'vue';
 import { resolveBooleanish } from '@/composables/useBooleanish';
 import { useUniqueId } from '@/composables/useUniqueId';
-import { ariaInvalid, validationClass } from '@/composables/useValidation';
-import type { Booleanish, FormState, OptionItem } from '@/types/common';
+import { ariaInvalid } from '@/composables/useValidation';
+import type { Booleanish, FormState } from '@/types/common';
 
-defineOptions({ name: 'BFormSelect' });
+defineOptions({ name: 'VBFormCheckbox' });
 
 const props = withDefaults(
   defineProps<{
-    modelValue: string | number | boolean;
-    options: OptionItem[];
+    modelValue: boolean;
     label?: string;
-    placeholder?: string;
+    name?: string;
     state?: FormState;
     invalidFeedback?: string;
     validFeedback?: string;
@@ -49,7 +46,7 @@ const props = withDefaults(
   }>(),
   {
     label: '',
-    placeholder: '',
+    name: '',
     state: null,
     invalidFeedback: '',
     validFeedback: '',
@@ -60,18 +57,15 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string | number | boolean): void;
+  (e: 'update:modelValue', value: boolean): void;
 }>();
 
-const uid = computed(() => props.id || useUniqueId('select'));
-const stateClass = computed(() => validationClass(props.state));
+const uid = computed(() => props.id || useUniqueId('checkbox'));
 const isDisabled = computed(() => resolveBooleanish(props.disabled));
 const isRequired = computed(() => resolveBooleanish(props.required));
 
 const onChange = (event: Event) => {
-  const target = event.target as HTMLSelectElement;
-  const rawValue = target.value;
-  const matched = props.options.find((option) => String(option.value) === rawValue);
-  emit('update:modelValue', matched ? matched.value : rawValue);
+  const target = event.target as HTMLInputElement;
+  emit('update:modelValue', target.checked);
 };
 </script>

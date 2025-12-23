@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils';
-import BAlert from '../components/feedback/BAlert.vue';
+import VBAlert from '../components/feedback/VBAlert.vue';
 
-describe('BAlert', () => {
+describe('VBAlert', () => {
   it('renders variant class', () => {
-    const wrapper = mount(BAlert, {
+    const wrapper = mount(VBAlert, {
       props: { variant: 'danger' },
       slots: { default: 'Alert message' },
     });
@@ -13,7 +13,7 @@ describe('BAlert', () => {
   });
 
   it('dismisses when close button clicked', async () => {
-    const wrapper = mount(BAlert, {
+    const wrapper = mount(VBAlert, {
       props: { dismissible: true, modelValue: true },
       slots: { default: 'Dismiss me' },
     });

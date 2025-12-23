@@ -1,9 +1,9 @@
 <template>
   <!-- TODO: Add variant and class props -->
-  <component :is="headerTag" class="card-header">
+  <component :is="footerTag" class="card-footer">
     <slot></slot>
-    <template v-if="showHeaderProp">
-      {{ header }}
+    <template v-if="showFooterProp">
+      {{ footer }}
     </template>
   </component>
 </template>
@@ -11,9 +11,11 @@
 <script lang="ts" setup>
 import { computed, useSlots } from 'vue';
 
+defineOptions({ name: 'VBCardFooter' });
+
 const props = defineProps({
-  header: String,
-  headerTag: {
+  footer: String,
+  footerTag: {
     type: String,
     default: 'div',
   },
@@ -21,8 +23,8 @@ const props = defineProps({
 
 const slots = useSlots();
 
-const showHeaderProp = computed(() => {
-  return !slots.default?.().length && !!props.header;
+const showFooterProp = computed(() => {
+  return !slots.default?.().length && !!props.footer;
 });
 </script>
 

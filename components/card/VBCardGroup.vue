@@ -5,6 +5,8 @@
 </template>
 <!-- TODO: Add grid view as an option, will need to add num-max-columns and num-max-rows -->
 <script lang="ts" setup>
+defineOptions({ name: 'VBCardGroup' });
+
 defineProps({
   tag: {
     type: String,

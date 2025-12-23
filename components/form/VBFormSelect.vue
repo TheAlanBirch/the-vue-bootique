@@ -1,22 +1,21 @@
 <template>
   <div class="mb-3">
     <label v-if="label" class="form-label" :for="uid">{{ label }}</label>
-    <input
+    <select
       :id="uid"
-      :type="type"
-      class="form-control"
+      class="form-select"
       :class="stateClass"
-      :placeholder="placeholder"
       :value="modelValue"
       :disabled="isDisabled"
-      :readonly="isReadonly"
       :required="isRequired"
       :aria-invalid="ariaInvalid(state) || undefined"
-      :aria-describedby="description ? `${uid}-desc` : undefined"
-      @input="onInput"
-      @blur="onBlur"
-    />
-    <small v-if="description" :id="`${uid}-desc`" class="form-text text-muted">{{ description }}</small>
+      @change="onChange"
+    >
+      <option v-if="placeholder" disabled value="">{{ placeholder }}</option>
+      <option v-for="option in options" :key="String(option.value)" :value="option.value" :disabled="option.disabled">
+        {{ option.label }}
+      </option>
+    </select>
     <div v-if="state === 'invalid' && invalidFeedback" class="invalid-feedback d-block">
       {{ invalidFeedback }}
     </div>
@@ -31,60 +30,48 @@ import { computed } from 'vue';
 import { resolveBooleanish } from '@/composables/useBooleanish';
 import { useUniqueId } from '@/composables/useUniqueId';
 import { ariaInvalid, validationClass } from '@/composables/useValidation';
-import type { Booleanish, FormState } from '@/types/common';
+import type { Booleanish, FormState, OptionItem } from '@/types/common';
 
-defineOptions({ name: 'BFormInput' });
+defineOptions({ name: 'VBFormSelect' });
 
 const props = withDefaults(
   defineProps<{
-    modelValue: string | number;
-    type?: string;
+    modelValue: string | number | boolean;
+    options: OptionItem[];
     label?: string;
     placeholder?: string;
-    description?: string;
     state?: FormState;
     invalidFeedback?: string;
     validFeedback?: string;
     disabled?: Booleanish;
-    readonly?: Booleanish;
     required?: Booleanish;
     id?: string;
   }>(),
   {
-    type: 'text',
     label: '',
     placeholder: '',
-    description: '',
     state: null,
     invalidFeedback: '',
     validFeedback: '',
     disabled: false,
-    readonly: false,
     required: false,
     id: '',
   },
 );
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string | number): void;
-  (e: 'blur', event: FocusEvent): void;
+  (e: 'update:modelValue', value: string | number | boolean): void;
 }>();
 
-const uid = computed(() => props.id || useUniqueId('input'));
+const uid = computed(() => props.id || useUniqueId('select'));
 const stateClass = computed(() => validationClass(props.state));
 const isDisabled = computed(() => resolveBooleanish(props.disabled));
-const isReadonly = computed(() => resolveBooleanish(props.readonly));
 const isRequired = computed(() => resolveBooleanish(props.required));
 
-const onInput = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  if (props.type === 'number') {
-    const numeric = Number(target.value);
-    emit('update:modelValue', Number.isNaN(numeric) ? target.value : numeric);
-  } else {
-    emit('update:modelValue', target.value);
-  }
+const onChange = (event: Event) => {
+  const target = event.target as HTMLSelectElement;
+  const rawValue = target.value;
+  const matched = props.options.find((option) => String(option.value) === rawValue);
+  emit('update:modelValue', matched ? matched.value : rawValue);
 };
-
-const onBlur = (event: FocusEvent) => emit('blur', event);
 </script>
