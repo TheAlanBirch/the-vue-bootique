@@ -10,7 +10,7 @@ defineOptions({ name: 'VBCardText' });
 defineProps({
   textTag: {
     type: String,
-    default: "p",
+    default: 'p',
   },
 });
 </script>

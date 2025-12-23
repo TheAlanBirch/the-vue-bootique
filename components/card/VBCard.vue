@@ -104,10 +104,6 @@ const isHorizontalCard = computed(() => {
 });
 
 const imagePosition = computed<'top' | 'bottom' | 'left' | 'right'>(() => {
-  const flags = [props.imgTop, props.imgBottom, props.imgLeft, props.imgRight].filter(Boolean).length;
-  if (flags > 1) {
-    // Prefer a deterministic priority when multiple positions are set
-  }
   if (props.imgBottom) return 'bottom';
   if (props.imgLeft) return 'left';
   if (props.imgRight) return 'right';
