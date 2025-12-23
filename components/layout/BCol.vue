@@ -45,7 +45,7 @@ const colClasses = computed(() => {
     value: number | string | boolean | undefined,
     breakpoint?: Breakpoint,
   ): string | null => {
-    if (value === undefined || value === null || value === false || value === '') return null;
+    if (!value && value !== 0) return null;
     const prefix = breakpoint ? `col-${breakpoint}` : 'col';
     if (value === true) return prefix;
     if (value === 'auto') return `${prefix}-auto`;
@@ -53,7 +53,7 @@ const colClasses = computed(() => {
   };
 
   const addOffsetClass = (value: number | string | undefined, breakpoint?: Breakpoint) => {
-    if (value === undefined || value === null || value === '') return;
+    if (!value && value !== 0) return;
     const infix = breakpoint ? `${breakpoint}-` : '';
     classes.push(`offset-${infix}${value}`);
   };
@@ -62,7 +62,7 @@ const colClasses = computed(() => {
     value: number | string | 'first' | 'last' | undefined,
     breakpoint?: Breakpoint,
   ) => {
-    if (value === undefined || value === null || value === '') return;
+    if (!value && value !== 0) return;
     const infix = breakpoint ? `${breakpoint}-` : '';
     classes.push(`order-${infix}${value}`);
   };

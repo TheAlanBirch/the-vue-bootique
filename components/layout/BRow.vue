@@ -35,7 +35,7 @@ const rowClasses = computed(() => {
   const classes = ['row'];
 
   const addColsClass = (value?: number | string, breakpoint?: Breakpoint) => {
-    if (value === undefined || value === null || value === '') return;
+    if (!value && value !== 0) return;
     if (breakpoint) {
       classes.push(`row-cols-${breakpoint}-${value}`);
     } else {
