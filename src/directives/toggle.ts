@@ -7,6 +7,8 @@ type CollapseInstance = InstanceType<typeof Collapse>;
 
 const collapseInstances = new WeakMap<HTMLElement, CollapseInstance>();
 const triggerHandlers = new WeakMap<HTMLElement, (event: Event) => void>();
+const triggerTargets = new WeakMap<HTMLElement, HTMLElement>();
+const collapseRefCounts = new WeakMap<HTMLElement, number>();
 
 const resolveTarget = (binding: DirectiveBinding<ToggleTarget>): HTMLElement | null => {
   const value = binding.value;
@@ -26,14 +28,32 @@ const resolveTarget = (binding: DirectiveBinding<ToggleTarget>): HTMLElement | n
 };
 
 const getCollapse = (target: HTMLElement): CollapseInstance => {
-  const existing = collapseInstances.get(target);
-  if (existing) {
-    return existing;
+  let instance = collapseInstances.get(target);
+  if (!instance) {
+    instance = new Collapse(target, { toggle: false });
+    collapseInstances.set(target, instance);
+    collapseRefCounts.set(target, 0);
   }
 
-  const instance = new Collapse(target, { toggle: false });
-  collapseInstances.set(target, instance);
+  const count = collapseRefCounts.get(target) ?? 0;
+  collapseRefCounts.set(target, count + 1);
   return instance;
+};
+
+const releaseCollapse = (target: HTMLElement | null): void => {
+  if (!target) return;
+
+  const instance = collapseInstances.get(target);
+  if (!instance) return;
+
+  const count = collapseRefCounts.get(target) ?? 0;
+  if (count <= 1) {
+    instance.dispose();
+    collapseInstances.delete(target);
+    collapseRefCounts.delete(target);
+  } else {
+    collapseRefCounts.set(target, count - 1);
+  }
 };
 
 const cleanupTrigger = (el: HTMLElement): void => {
@@ -41,6 +61,12 @@ const cleanupTrigger = (el: HTMLElement): void => {
   if (handler) {
     el.removeEventListener('click', handler);
     triggerHandlers.delete(el);
+  }
+
+  const target = triggerTargets.get(el) ?? null;
+  if (target) {
+    releaseCollapse(target);
+    triggerTargets.delete(el);
   }
 };
 
@@ -64,6 +90,7 @@ const applyToggle = (el: HTMLElement, binding: DirectiveBinding<ToggleTarget>): 
 
   el.addEventListener('click', handler);
   triggerHandlers.set(el, handler);
+  triggerTargets.set(el, target);
 };
 
 export const vToggle: Directive<HTMLElement, ToggleTarget> = {
