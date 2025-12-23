@@ -10,6 +10,9 @@ import BFormSelect from './components/form/BFormSelect.vue';
 import BFormTextarea from './components/form/BFormTextarea.vue';
 import BModal from './components/overlay/BModal.vue';
 import BNavbar from './components/navigation/BNavbar.vue';
+import BCol from './components/layout/BCol.vue';
+import BContainer from './components/layout/BContainer.vue';
+import BRow from './components/layout/BRow.vue';
 
 const components = [
   BAlert,
@@ -23,6 +26,9 @@ const components = [
   BModal,
   BNavbar,
   BCardText,
+  BCol,
+  BContainer,
+  BRow,
 ];
 
 export const install = (app: App): void => {
@@ -49,6 +55,9 @@ export {
   BModal,
   BNavbar,
   BCardText,
+  BCol,
+  BContainer,
+  BRow,
 };
 
 export * from './types/common';

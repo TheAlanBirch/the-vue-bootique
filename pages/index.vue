@@ -1,5 +1,5 @@
 <template>
-  <div class="container py-4">
+  <b-container class="py-4">
     <b-navbar brand="Vue Bootique" background="dark" variant="dark" class="mb-4">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
@@ -62,7 +62,21 @@
         <b-button type="submit" variant="primary" :disabled="!form.accepted">Submit</b-button>
       </div>
     </form>
-  </div>
+    <section class="mt-5">
+      <h5 class="mb-3">Grid layout preview</h5>
+      <b-row class="g-3">
+        <b-col cols="12" md="4">
+          <div class="p-3 border rounded bg-light text-center">col-12 col-md-4</div>
+        </b-col>
+        <b-col cols="12" md="4">
+          <div class="p-3 border rounded bg-light text-center">col-12 col-md-4</div>
+        </b-col>
+        <b-col cols="12" md="4">
+          <div class="p-3 border rounded bg-light text-center">col-12 col-md-4</div>
+        </b-col>
+      </b-row>
+    </section>
+  </b-container>
 </template>
 
 <script lang="ts" setup>
