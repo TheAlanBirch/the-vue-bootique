@@ -1,12 +1,21 @@
-import { defineVitestConfig } from '@nuxt/test-utils/config';
+import path from 'node:path';
+import vue from '@vitejs/plugin-vue';
+import { defineConfig } from 'vitest/config';
 
-export default defineVitestConfig({
+export default defineConfig({
+  plugins: [vue()],
   define: {
     'import.meta.test': 'true',
   },
-  // any custom Vitest config you require
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './'),
+      '~': path.resolve(__dirname, './'),
+    },
+  },
   test: {
-    environment: 'nuxt',
     globals: true,
+    environment: 'happy-dom',
+    setupFiles: './test/setup.ts',
   },
 });
